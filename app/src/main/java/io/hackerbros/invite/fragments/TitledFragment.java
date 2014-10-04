@@ -1,4 +1,4 @@
-package io.hackerbros.invite.feed;
+package io.hackerbros.invite.fragments;
 
 import android.support.v4.app.Fragment;
 
