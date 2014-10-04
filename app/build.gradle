@@ -42,5 +42,4 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile project(':facebook-android-sdk-3.19.0:facebook')
-    compile project(':ParseStarterProject')
 }

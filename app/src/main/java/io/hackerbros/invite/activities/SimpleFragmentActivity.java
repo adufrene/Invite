@@ -1,4 +1,4 @@
-package io.hackerbros.invite;
+package io.hackerbros.invite.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -20,7 +20,7 @@ public abstract class SimpleFragmentActivity extends Activity {
     if (fragment == null) {
       fragment = getFragment();
       fm.beginTransaction()
-        .add(R.id.fragmentContainer, fragment)
+        .add(R.id.login_feed_full_fragment_container, fragment)
         .commit();
     }
   }
