@@ -2,11 +2,17 @@
     <style name="InviteActionBarTheme"
             parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/InviteActionBar</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarTabTextStyle">@style/GreenTextStyle</item>
     </style>
 
     <style name="InviteActionBar"
             parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/invite_main_color</item>
+        <item name="android:backgroundStacked">@android:color/white</item>
+    </style>
+
+    <style name="GreenTextStyle"
+            parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/invite_main_color</item>
     </style>
 </resources>

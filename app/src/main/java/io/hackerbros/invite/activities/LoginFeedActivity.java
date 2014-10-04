@@ -10,8 +10,8 @@ import io.hackerbros.invite.login.LoginFragment;
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.event.AddEventFragment;
-import io.hackerbros.invite.fragments.NewsFeedFragment;
 import io.hackerbros.invite.util.SharedPrefsUtils;
+import io.hackerbros.invite.activities.NewsFeedActivity;
 
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseAnonymousUtils;
@@ -21,12 +21,17 @@ public class LoginFeedActivity extends SimpleFragmentActivity {
     private Button addNewEventButton;
     private AddEventFragment eventFrag;
 
-    public Fragment getFragment() {
-        if (ParseUser.getCurrentUser() == null || ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
-            return LoginFragment.createFragment();
-        } else {
-            return new NewsFeedFragment();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (ParseUser.getCurrentUser() != null && !ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+            startActivity(new Intent(this, NewsFeedActivity.class));
         }
+    }
+
+    public Fragment getFragment() {
+        return LoginFragment.createFragment();
     }
 
     @Override
