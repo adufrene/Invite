@@ -9,7 +9,6 @@ import android.widget.Button;
 import io.hackerbros.invite.login.LoginFragment;
 import io.hackerbros.invite.R;
 
-import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 
 import io.hackerbros.invite.R;
@@ -22,15 +21,13 @@ public class LoginFeedActivity extends SimpleFragmentActivity implements View.On
 
    public Fragment getFragment() {
       // if not logged in then return LoginFragment.createFragment();
-      return new NewsFeedFragment();
+      return LoginFragment.createFragment(); //new NewsFeedFragment();
    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_feed);
-        Parse.initialize(this, "JM1ObdhIVJuQSh1KogpvZRsU4nvcQkrcutOi9fO7", "s2Zd3ysZ5bL4UO8WDDCrj6djIheWjJHyMRSoYDn0");
-        ParseFacebookUtils.initialize(getResources().getString(R.string.app_id));
     }
 
     @Override
@@ -39,7 +36,7 @@ public class LoginFeedActivity extends SimpleFragmentActivity implements View.On
 
         // setting onCreate returns null because it doesn't allow enough time to inflate view,
         // is there a better way?
-        if (isLaunchLogin_DEBUG) {
+        if (!isLaunchLogin_DEBUG) {
             addNewEventButton = (Button) findViewById(R.id.add_event_button);
             addNewEventButton.setOnClickListener(this);
         }
