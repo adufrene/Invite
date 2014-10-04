@@ -1,7 +1,6 @@
-package io.hackerbros.invite.fragments;
+package io.hackerbros.invite.feed;
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import com.parse.ParseQuery;
  * A simple {@link Fragment} subclass.
  *
  */
-public class NewsFeedFragment extends Fragment {
+public class NewsFeedFragment extends TitledFragment {
     private ParseQueryAdapter<Event> eventAdapter;
 
     public NewsFeedFragment() {
@@ -96,6 +95,11 @@ public class NewsFeedFragment extends Fragment {
         if (eventAdapter != null) {
             eventAdapter.loadObjects();
         } 
+    }
+
+    @Override
+    public String getTitle() {
+        return "News Feed";
     }
 
 }

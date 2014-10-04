@@ -12,7 +12,7 @@ import android.util.Log;
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.util.SharedPrefsUtils;
 import io.hackerbros.invite.activities.SimpleFragmentActivity;
-import io.hackerbros.invite.fragments.NewsFeedFragment;
+import io.hackerbros.invite.activities.NewsFeedActivity;
 
 import com.parse.ParseUser;
 import com.parse.ParseException;
@@ -52,7 +52,8 @@ public class LoginFragment extends Fragment {
         }
         else {
           Log.d(TAG, "User logged in");
-          ((SimpleFragmentActivity) getActivity()).swapFragments(new NewsFeedFragment());
+          getActivity().finish();
+          getActivity().startActivity(new Intent(getActivity(), NewsFeedActivity.class));
         }
       }
     });
