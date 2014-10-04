@@ -87,3 +87,6 @@ gradle-app.setting
 
 # custom
 *.iml
+
+# Vim
+*.swp
