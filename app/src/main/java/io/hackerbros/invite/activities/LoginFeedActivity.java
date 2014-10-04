@@ -20,7 +20,8 @@ public class LoginFeedActivity extends SimpleFragmentActivity implements View.On
 
    public Fragment getFragment() {
       // if not logged in then return LoginFragment.createFragment();
-      return new NewsFeedFragment();
+      //return new NewsFeedFragment();
+      return LoginFragment.createFragment();
    }
 
     @Override
