@@ -3,6 +3,7 @@
             parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/InviteActionBar</item>
         <item name="android:actionBarTabTextStyle">@style/GreenTextStyle</item>
+        <item name="android:actionBarTabStyle">@style/ColorizedTabs</item>
     </style>
 
     <style name="InviteActionBar"
@@ -14,5 +15,9 @@
     <style name="GreenTextStyle"
             parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/invite_main_color</item>
+    </style>
+
+    <style name="ColorizedTabs">
+        <item name="android:background">@drawable/tab_indicator_holo</item>
     </style>
 </resources>

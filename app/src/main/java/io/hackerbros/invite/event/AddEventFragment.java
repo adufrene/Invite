@@ -40,7 +40,6 @@ import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.LoginFeedActivity;
 import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.data.InviteGeoLocation;
-import io.hackerbros.invite.fragments.NewsFeedFragment;
 import io.hackerbros.invite.network.InviteNetworkObject;
 
 import com.parse.ParseException;
