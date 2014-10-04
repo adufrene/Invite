@@ -40,11 +40,9 @@ import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.LoginFeedActivity;
 import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.data.InviteGeoLocation;
-import io.hackerbros.invite.fragments.NewsFeedFragment;
-import io.hackerbros.invite.network.InviteNetworkObject;
+import io.hackerbros.invite.network.NetworkUtils;
 
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.SaveCallback;
 
 public class AddEventFragment extends Fragment implements View.OnClickListener {
@@ -116,13 +114,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity().getApplicationContext(), "Address incorrect", Toast.LENGTH_LONG).show();
         }
 
-        try {
-            Geocoder location = new Geocoder(getActivity().getApplicationContext());
-            List<Address> addr = location.getFromLocationName(selectedLocation, 1);
-            newEvent.setLocation(new InviteGeoLocation(addr.get(0).getLatitude(), addr.get(0).getLongitude()));
-        } catch(IOException e) {
-            Toast.makeText(getActivity().getApplicationContext(), "Failed to confirm address", Toast.LENGTH_LONG).show();
-        }
+        ArrayList<String> addrList = NetworkUtils.requestGeocodingData(selectedLocation);
 
         EditText titleField = (EditText) parentActivity.findViewById(R.id.add_event_edit_title);
         EditText descriptionField = (EditText) parentActivity.findViewById(R.id.add_event_edit_description);
