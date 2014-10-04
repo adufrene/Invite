@@ -24,7 +24,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/invite"
         android:label="@string/app_name"
         android:theme="@style/InviteActionBarTheme"
         android:name=".application.InitApplication" >
@@ -49,6 +49,7 @@
 
     <activity 
             android:name=".activities.EventActivity" 
+            android:parentActivityName=".activities.NewsFeedActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize" />
     <activity 

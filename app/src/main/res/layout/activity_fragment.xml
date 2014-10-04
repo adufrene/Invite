@@ -1,6 +1,6 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_container"
-    android:background="@color/invite_main_color"
+    android:background="@color/background_color"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

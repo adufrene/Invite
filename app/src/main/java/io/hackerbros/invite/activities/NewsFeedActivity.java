@@ -8,9 +8,14 @@ import android.support.v4.app.Fragment;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.View.OnClickListener;
+import android.view.View;
+import android.content.Intent;
 
 import io.hackerbros.invite.R;
-import io.hackerbros.invite.feed.TitledFragment;
+import io.hackerbros.invite.fragments.TitledFragment;
+import io.hackerbros.invite.fragments.ProfileFragment;
+import io.hackerbros.invite.fragments.MapFragment;
 import io.hackerbros.invite.feed.NewsFeedFragment;
 
 public class NewsFeedActivity extends FragmentActivity {
@@ -21,6 +26,13 @@ public class NewsFeedActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
+
+        findViewById(R.id.add_event_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(NewsFeedActivity.this, EventActivity.class));
+            }
+        });
 
         mPagerAdapter = new NewsFeedPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -66,8 +78,8 @@ public class NewsFeedActivity extends FragmentActivity {
             fragments = new TitledFragment[3];
 
             fragments[0] = new NewsFeedFragment();
-            fragments[1] = new NewsFeedFragment();
-            fragments[2] = new NewsFeedFragment();
+            fragments[1] = new ProfileFragment();
+            fragments[2] = new MapFragment();
         }
 
         @Override

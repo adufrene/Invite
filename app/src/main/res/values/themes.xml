@@ -10,6 +10,7 @@
             parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/invite_main_color</item>
         <item name="android:backgroundStacked">@android:color/white</item>
+        <item name="android:titleTextStyle">@style/WhiteTextStyle</item>
     </style>
 
     <style name="GreenTextStyle"
@@ -17,7 +18,13 @@
         <item name="android:textColor">@color/invite_main_color</item>
     </style>
 
+    <style name="WhiteTextStyle"
+            parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="ColorizedTabs">
         <item name="android:background">@drawable/tab_indicator_holo</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>
