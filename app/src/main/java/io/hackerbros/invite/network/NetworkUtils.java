@@ -17,11 +17,9 @@ import java.util.ArrayList;
 public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
     private static final String GOOGLE_GEOCODING = "https://maps.googleapis.com/maps/api/geocode/json";
-    private static final String API_KEY = "AIzaSyBy5wH84ZUND8BZma_EhZg0nfTPofWPgz4";
+    private static final String API_KEY = "AIzaSyCUo5ApvI3OdDHTaUMe3glBAOUsjpIEEAA"; // Android Key
 
-    public static ArrayList<String> requestGeocodingData(String input) {
-        ArrayList<String> resultList = null;
-
+    public static JSONObject requestGeocodingData(String input) {
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
@@ -41,31 +39,24 @@ public class NetworkUtils {
         }
         catch (MalformedURLException e) {
             Log.e(TAG, "Error processing Geocoding API URL", e);
-            return resultList;
+            return null;
         }
         catch (IOException e) {
             Log.e(TAG, "Error connecting to Geocoding API", e);
-            return resultList;
+            return null;
         }
         finally {
             if (conn != null) {
                 conn.disconnect();
             }
         }
-
         try {
-            JSONObject jsonObj = new JSONObject(jsonResults.toString());
-            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
-            resultList = new ArrayList<String>(predsJsonArray.length());
-            for (int i = 0; i < predsJsonArray.length(); ++i) {
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-            }
-        }
-        catch (JSONException e) {
-            Log.e(TAG, "Cannot process JSON results", e);
+            return new JSONObject(jsonResults.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return resultList;
+        return null;
+
     }
 }

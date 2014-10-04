@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/invite_main_color"
+    android:background="@color/background_color"
     android:layout_centerHorizontal="true">
 
     <FrameLayout
@@ -17,13 +17,13 @@
             android:layout_height="match_parent"
             android:divider="@null" />
 
-        <Button
+        <ImageButton
             android:id="@+id/add_event_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Event"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="10dp" />
+            android:background="@drawable/add_event_button"
+            android:layout_marginBottom="10dp"/>
 
     </FrameLayout>
 
