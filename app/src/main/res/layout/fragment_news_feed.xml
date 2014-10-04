@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/invite_main_color"
     android:layout_centerHorizontal="true">
 
     <FrameLayout
@@ -13,7 +14,8 @@
         <ListView
             android:id="@+id/news_feed"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:divider="@null" />
 
         <Button
             android:id="@+id/add_event_button"
