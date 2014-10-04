@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,10 +41,10 @@ import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.LoginFeedActivity;
 import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.data.InviteGeoLocation;
-import io.hackerbros.invite.network.InviteNetworkObject;
+import io.hackerbros.invite.network.NetworkUtils;
+
 
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.SaveCallback;
 
 public class AddEventFragment extends Fragment implements View.OnClickListener {
@@ -59,6 +60,8 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
     private Activity parentActivity;
 
     private String selectedLocation;
+    JSONObject addrList;
+    Event newEvent = new Event();
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -106,21 +109,12 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
     }
 
     private void constructEventsFromUserFields() {
-        Event newEvent = new Event();
         int error = 0;
 
         //confirm address
         if(selectedLocation.isEmpty()) {
             error++;
             Toast.makeText(getActivity().getApplicationContext(), "Address incorrect", Toast.LENGTH_LONG).show();
-        }
-
-        try {
-            Geocoder location = new Geocoder(getActivity().getApplicationContext());
-            List<Address> addr = location.getFromLocationName(selectedLocation, 1);
-            newEvent.setLocation(new InviteGeoLocation(addr.get(0).getLatitude(), addr.get(0).getLongitude()));
-        } catch(IOException e) {
-            Toast.makeText(getActivity().getApplicationContext(), "Failed to confirm address", Toast.LENGTH_LONG).show();
         }
 
         EditText titleField = (EditText) parentActivity.findViewById(R.id.add_event_edit_title);
@@ -141,20 +135,40 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
         newEvent.setPublicEvent(selector.getCheckedRadioButtonId()
                 == R.id.add_event_type_selector_public ? true : false);
 
-        if (error == 0) {
-            newEvent.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null) {
-                        Log.e(TAG, "Error:", e);
-                    }
-                    getActivity().finish();
-                }
-            });
 
-            Intent i = new Intent(getActivity(), LoginFeedActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            getActivity().startActivity(i);
+        if (error == 0) {
+            (new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        addrList = NetworkUtils.requestGeocodingData(selectedLocation);
+                        double lat = addrList.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                        double lng = addrList.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+                        newEvent.setLocation(new InviteGeoLocation(lat, lng));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    newEvent.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "Error:", e);
+                            }
+                            getActivity().finish();
+                        }
+                    });
+
+                    Intent i = new Intent(getActivity(), LoginFeedActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    getActivity().startActivity(i);
+                }
+            }).execute();
         }
     }
 
