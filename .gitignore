@@ -84,3 +84,6 @@ build/
 gradle-app.setting
 
 .DS_Store
+
+# custom
+*.iml
