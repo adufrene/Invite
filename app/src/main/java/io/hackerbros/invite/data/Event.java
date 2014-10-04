@@ -7,11 +7,11 @@ import com.parse.ParseClassName;
 
 @ParseClassName("Events")
 public class Event extends ParseObject {
-    private static final String EVENT_TITLE_KEY = "Title";
-    private static final String EVENT_DESCRIPTION_KEY = "Description";
-    private static final String DATE_TIME_KEY = "Timestamp";
-    private static final String LOCATION_KEY = "Location";
-    private static final String PUBLIC_EVENT_KEY = "isPublic";
+    public static final String EVENT_TITLE_KEY = "Title";
+    public static final String EVENT_DESCRIPTION_KEY = "Description";
+    public static final String DATE_TIME_KEY = "Timestamp";
+    public static final String LOCATION_KEY = "Location";
+    public static final String PUBLIC_EVENT_KEY = "isPublic";
 
     public String getEventTitle() {
         return getString(EVENT_TITLE_KEY);
