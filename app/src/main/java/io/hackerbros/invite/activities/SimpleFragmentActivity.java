@@ -11,7 +11,7 @@ import io.hackerbros.invite.R;
 public abstract class SimpleFragmentActivity extends Activity {
    public abstract Fragment getFragment();
 
-   private FragmentManager fm;
+   protected FragmentManager fm;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -22,20 +22,8 @@ public abstract class SimpleFragmentActivity extends Activity {
 
       fragment = getFragment();
       fm.beginTransaction()
-              .add(R.id.login_feed_full_fragment_container, fragment)
+              .add(R.id.fragment_container, fragment)
               .commit();
    }
 
-   public void addFragment(Fragment newFrag) {
-      Fragment newFragment = newFrag;
-      fm.beginTransaction()
-              .add(R.id.login_feed_full_fragment_container, newFragment)
-              .commit();
-   }
-
-   public void removeFragment(Fragment removeFrag) {
-      fm.beginTransaction()
-              .remove(removeFrag)
-              .commit();
-   }
 }

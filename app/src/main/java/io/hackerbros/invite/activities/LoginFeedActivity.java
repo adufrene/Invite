@@ -12,42 +12,17 @@ import io.hackerbros.invite.R;
 import com.parse.ParseFacebookUtils;
 
 import io.hackerbros.invite.R;
-import io.hackerbros.invite.fragments.AddEventFragment;
+import io.hackerbros.invite.event.AddEventFragment;
 import io.hackerbros.invite.fragments.NewsFeedFragment;
 
-public class LoginFeedActivity extends SimpleFragmentActivity implements View.OnClickListener {
+public class LoginFeedActivity extends SimpleFragmentActivity {
    private Button addNewEventButton;
    private boolean isLaunchLogin_DEBUG = true;
 
    public Fragment getFragment() {
       // if not logged in then return LoginFragment.createFragment();
-      return LoginFragment.createFragment(); //new NewsFeedFragment();
-   }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_feed);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // setting onCreate returns null because it doesn't allow enough time to inflate view,
-        // is there a better way?
-        if (!isLaunchLogin_DEBUG) {
-            addNewEventButton = (Button) findViewById(R.id.add_event_button);
-            addNewEventButton.setOnClickListener(this);
-        }
-    }
-
-   @Override
-   public void onClick(View v) {
-      if (v.getId() == R.id.add_event_button) {
-         addFragment(new AddEventFragment());
-          addNewEventButton.setVisibility(View.GONE);
-      }
+//      return LoginFragment.createFragment();
+        return new NewsFeedFragment();
    }
 
     @Override
