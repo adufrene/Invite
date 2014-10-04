@@ -1,6 +1,9 @@
 package io.hackerbros.invite.event;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.util.Log;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -16,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.content.Context;
 import android.widget.AutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.lang.StringBuilder;
@@ -25,19 +30,24 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
 import io.hackerbros.invite.R;
+import io.hackerbros.invite.activities.LoginFeedActivity;
 import io.hackerbros.invite.data.Event;
+import io.hackerbros.invite.data.InviteGeoLocation;
+import io.hackerbros.invite.fragments.NewsFeedFragment;
 import io.hackerbros.invite.network.InviteNetworkObject;
 
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.SaveCallback;
 
-public class AddEventFragment extends Fragment implements View.OnClickListener{
+public class AddEventFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = AddEventFragment.class.getSimpleName();
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
@@ -48,6 +58,8 @@ public class AddEventFragment extends Fragment implements View.OnClickListener{
 
     private Button submitButton;
     private Activity parentActivity;
+
+    private String selectedLocation;
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -67,6 +79,12 @@ public class AddEventFragment extends Fragment implements View.OnClickListener{
 
         AutoCompleteTextView tv = (AutoCompleteTextView) v.findViewById(R.id.add_event_edit_location);
         tv.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), android.R.layout.simple_list_item_1));
+        tv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                selectedLocation = (String) adapterView.getItemAtPosition(position);
+            }
+        });
 
         return v;
     }
@@ -90,25 +108,55 @@ public class AddEventFragment extends Fragment implements View.OnClickListener{
 
     private void constructEventsFromUserFields() {
         Event newEvent = new Event();
+        int error = 0;
+
+        //confirm address
+        if(selectedLocation.isEmpty()) {
+            error++;
+            Toast.makeText(getActivity().getApplicationContext(), "Address incorrect", Toast.LENGTH_LONG).show();
+        }
+
+        try {
+            Geocoder location = new Geocoder(getActivity().getApplicationContext());
+            List<Address> addr = location.getFromLocationName(selectedLocation, 1);
+            newEvent.setLocation(new InviteGeoLocation(addr.get(0).getLatitude(), addr.get(0).getLongitude()));
+        } catch(IOException e) {
+            Toast.makeText(getActivity().getApplicationContext(), "Failed to confirm address", Toast.LENGTH_LONG).show();
+        }
 
         EditText titleField = (EditText) parentActivity.findViewById(R.id.add_event_edit_title);
         EditText descriptionField = (EditText) parentActivity.findViewById(R.id.add_event_edit_description);
         RadioGroup selector = (RadioGroup) parentActivity.findViewById(R.id.add_event_type_selector);
 
         newEvent.setEventTitle(titleField.getText().toString());
+        if(titleField.getText().toString().length() < 1) {
+            Toast.makeText(getActivity().getApplicationContext(), "Enter an event title name", Toast.LENGTH_LONG).show();
+            error++;
+        }
         newEvent.setEventDescription(descriptionField.getText().toString());
+        if(descriptionField.getText().toString().length() < 1) {
+            Toast.makeText(getActivity().getApplicationContext(), "Enter an event description", Toast.LENGTH_LONG).show();
+            error++;
+        }
+
         newEvent.setPublicEvent(selector.getCheckedRadioButtonId()
                 == R.id.add_event_type_selector_public ? true : false);
 
-        newEvent.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error:", e);
+        if (error == 0) {
+            newEvent.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error:", e);
+                    }
+                    getActivity().finish();
                 }
-                getActivity().finish();
-            }
-        });
+            });
+
+            Intent i = new Intent(getActivity(), LoginFeedActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            getActivity().startActivity(i);
+        }
     }
 
     private ArrayList<String> autocomplete(String input) {
@@ -177,6 +225,8 @@ public class AddEventFragment extends Fragment implements View.OnClickListener{
         public String getItem(int index) {
             return resultList.get(index);
         }
+
+
     
         @Override
         public Filter getFilter() {
