@@ -1,3 +1,2 @@
 include ':app'
 include ':facebook-android-sdk-3.19.0:facebook'
-include ':ParseStarterProject'

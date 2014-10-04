@@ -26,6 +26,33 @@ public class LoginFeedActivity extends SimpleFragmentActivity {
    }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login_feed);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // setting onCreate returns null because it doesn't allow enough time to inflate view,
+        // is there a better way?
+        if (!isLaunchLogin_DEBUG) {
+            addNewEventButton = (Button) findViewById(R.id.add_event_button);
+            addNewEventButton.setOnClickListener(this);
+        }
+    }
+
+   @Override
+   public void onClick(View v) {
+      if (v.getId() == R.id.add_event_button) {
+         addFragment(new AddEventFragment());
+          addNewEventButton.setVisibility(View.GONE);
+      }
+>>>>>>> 4d9525dfa1e5840a0dcf75b6af40efbb78eb4326
+   }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
       super.onActivityResult(requestCode, resultCode, data);
       ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
