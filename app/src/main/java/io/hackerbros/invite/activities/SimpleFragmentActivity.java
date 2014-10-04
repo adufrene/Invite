@@ -1,4 +1,4 @@
-package io.hackerbros.invite;
+package io.hackerbros.invite.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
