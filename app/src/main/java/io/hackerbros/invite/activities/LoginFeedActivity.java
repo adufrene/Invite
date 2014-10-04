@@ -16,13 +16,17 @@ import io.hackerbros.invite.fragments.AddEventFragment;
 import io.hackerbros.invite.fragments.NewsFeedFragment;
 
 public class LoginFeedActivity extends SimpleFragmentActivity implements View.OnClickListener {
-   private Button addNewEventButton;
-   private boolean isLaunchLogin_DEBUG = true;
+    private Button addNewEventButton;
+    private boolean isLaunchLogin_DEBUG = false; // FALSE will skip login screen
 
-   public Fragment getFragment() {
-      // if not logged in then return LoginFragment.createFragment();
-      return LoginFragment.createFragment(); //new NewsFeedFragment();
-   }
+    public Fragment getFragment() {
+        // if not logged in then return LoginFragment.createFragment();
+        if (isLaunchLogin_DEBUG) {
+            return LoginFragment.createFragment();
+        } else {
+            return new NewsFeedFragment();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,17 +46,17 @@ public class LoginFeedActivity extends SimpleFragmentActivity implements View.On
         }
     }
 
-   @Override
-   public void onClick(View v) {
-      if (v.getId() == R.id.add_event_button) {
-         addFragment(new AddEventFragment());
-          addNewEventButton.setVisibility(View.GONE);
-      }
-   }
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.add_event_button) {
+            addFragment(new AddEventFragment());
+            addNewEventButton.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-      super.onActivityResult(requestCode, resultCode, data);
-      ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 }
