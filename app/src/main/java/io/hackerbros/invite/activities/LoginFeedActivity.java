@@ -12,12 +12,13 @@ import io.hackerbros.invite.R;
 import com.parse.ParseFacebookUtils;
 
 import io.hackerbros.invite.R;
-import io.hackerbros.invite.fragments.AddEventFragment;
+import io.hackerbros.invite.event.AddEventFragment;
 import io.hackerbros.invite.fragments.NewsFeedFragment;
 
-public class LoginFeedActivity extends SimpleFragmentActivity implements View.OnClickListener {
+public class LoginFeedActivity extends SimpleFragmentActivity implements View.OnClickListener, io.hackerbros.invite.fragments.AddEventFragment.AddEventFragmentCallbacks {
     private Button addNewEventButton;
     private boolean isLaunchLogin_DEBUG = false; // FALSE will skip login screen
+    private AddEventFragment eventFrag;
 
     public Fragment getFragment() {
         // if not logged in then return LoginFragment.createFragment();
@@ -49,7 +50,7 @@ public class LoginFeedActivity extends SimpleFragmentActivity implements View.On
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.add_event_button) {
-            addFragment(new AddEventFragment());
+            addFragment(eventFrag = new AddEventFragment());
             addNewEventButton.setVisibility(View.GONE);
         }
     }
@@ -58,5 +59,10 @@ public class LoginFeedActivity extends SimpleFragmentActivity implements View.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void addEventSubmitCompleteCallback() {
+        removeFragment(eventFrag);
     }
 }
