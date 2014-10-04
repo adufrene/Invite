@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import io.hackerbros.invite.R;
+import io.hackerbros.invite.util.SharedPrefsUtils;
+import io.hackerbros.invite.activities.SimpleFragmentActivity;
+import io.hackerbros.invite.fragments.NewsFeedFragment;
 
 import com.parse.ParseUser;
 import com.parse.ParseException;
@@ -47,11 +50,9 @@ public class LoginFragment extends Fragment {
         if (user ==null) {
           Log.d(TAG, "User canceled");
         }
-        else if (user.isNew()) {
-          Log.d(TAG, "User signed up");
-        }
         else {
           Log.d(TAG, "User logged in");
+          ((SimpleFragmentActivity) getActivity()).swapFragments(new NewsFeedFragment());
         }
       }
     });

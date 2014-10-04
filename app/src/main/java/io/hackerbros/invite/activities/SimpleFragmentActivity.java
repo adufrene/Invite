@@ -38,4 +38,10 @@ public abstract class SimpleFragmentActivity extends Activity {
                 .remove(removeFrag)
                 .commit();
     }
+
+   public void swapFragments(Fragment f) {
+       fm.beginTransaction()
+           .replace(R.id.fragment_container, f)
+           .commit();
+   }
 }
