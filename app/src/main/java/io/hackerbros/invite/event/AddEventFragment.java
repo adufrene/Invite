@@ -45,11 +45,6 @@ public class AddEventFragment extends Fragment implements View.OnClickListener{
 
     private Button submitButton;
     private Activity parentActivity;
-    private AddEventFragmentCallbacks addCallbacks;
-
-    public interface AddEventFragmentCallbacks {
-        public void addEventSubmitCompleteCallback();
-    }
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -103,12 +98,6 @@ public class AddEventFragment extends Fragment implements View.OnClickListener{
                 == R.id.add_event_type_selector_public ? true : false);
 
         InviteNetworkObject.submitEventObject(newEvent);
-
-        addCallbacks.addEventSubmitCompleteCallback();
-    }
-
-    public void setAddCompleteCallback(AddEventFragmentCallbacks callback) {
-        addCallbacks = callback;
     }
 
     private ArrayList<String> autocomplete(String input) {
