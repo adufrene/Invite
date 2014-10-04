@@ -4,6 +4,23 @@ android {
     compileSdkVersion 19
     buildToolsVersion "19.1"
 
+    signingConfigs {
+        debug {
+            storeFile file("../signing/debug.keystore")
+        }
+    }
+
+    packagingOptions {
+      exclude 'AndroidManifest.xml'
+      exclude 'resources.arsc'
+      exclude 'res/drawable-hdpi-v4/ic_launcher.png'
+      exclude 'res/drawable-mdpi-v4/ic_launcher.png'
+      exclude 'res/drawable-xhdpi-v4/ic_launcher.png'
+      exclude 'res/drawable-xxhdpi-v4/ic_launcher.png'
+      exclude 'classes.dex'
+    }
+
+/*
     defaultConfig {
         applicationId "io.hackerbros.invite"
         minSdkVersion 16
@@ -11,14 +28,19 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    */
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile project(':facebook-android-sdk-3.19.0:facebook')
+    compile project(':ParseStarterProject')
 }
