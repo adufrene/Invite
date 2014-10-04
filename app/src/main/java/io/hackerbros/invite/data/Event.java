@@ -41,7 +41,7 @@ public class Event extends ParseObject {
         return getString(LOCATION_KEY);
     }
 
-    public void setLocation(String location) {
+    public void setLocation(InviteGeoLocation location) {
         put(LOCATION_KEY, location);
     }
 
