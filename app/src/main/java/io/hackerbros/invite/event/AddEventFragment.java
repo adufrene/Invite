@@ -34,6 +34,9 @@ import io.hackerbros.invite.R;
 import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.network.InviteNetworkObject;
 
+import com.parse.ParseException;
+import com.parse.SaveCallback;
+
 public class AddEventFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = AddEventFragment.class.getSimpleName();
 
@@ -97,7 +100,15 @@ public class AddEventFragment extends Fragment implements View.OnClickListener{
         newEvent.setPublicEvent(selector.getCheckedRadioButtonId()
                 == R.id.add_event_type_selector_public ? true : false);
 
-        InviteNetworkObject.submitEventObject(newEvent);
+        newEvent.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error:", e);
+                }
+                getActivity().finish();
+            }
+        });
     }
 
     private ArrayList<String> autocomplete(String input) {

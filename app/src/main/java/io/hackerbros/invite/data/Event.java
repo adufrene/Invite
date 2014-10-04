@@ -1,51 +1,59 @@
 package io.hackerbros.invite.data;
 
 import java.util.Date;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseClassName;
 
-public class Event {
-    private String eventTitle;
-    private String eventDescription;
-    private Date dateTime;
-    private String location;
-    private boolean publicEvent = true;
+@ParseClassName("Events")
+public class Event extends ParseObject {
+    private static final String EVENT_TITLE_KEY = "Title";
+    private static final String EVENT_DESCRIPTION_KEY = "Description";
+    private static final String DATE_TIME_KEY = "Timestamp";
+    private static final String LOCATION_KEY = "Location";
+    private static final String PUBLIC_EVENT_KEY = "isPublic";
 
     public String getEventTitle() {
-        return eventTitle;
+        return getString(EVENT_TITLE_KEY);
     }
 
     public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
+        put(EVENT_TITLE_KEY, eventTitle);
     }
 
     public String getEventDescription() {
-        return eventDescription;
+        return getString(EVENT_DESCRIPTION_KEY); 
     }
 
     public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
+        put(EVENT_DESCRIPTION_KEY, eventDescription);
     }
 
     public Date getDateTime() {
-        return dateTime;
+        return new Date(getLong(DATE_TIME_KEY));
     }
 
     public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+        put(DATE_TIME_KEY, dateTime.getTime());
     }
 
     public String getLocation() {
-        return location;
+        return getString(LOCATION_KEY);
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        put(LOCATION_KEY, location);
     }
 
     public boolean isPublicEvent() {
-        return publicEvent;
+        return getBoolean(PUBLIC_EVENT_KEY);
     }
 
     public void setPublicEvent(boolean publicEvent) {
-        this.publicEvent = publicEvent;
+        put(PUBLIC_EVENT_KEY, publicEvent);
+    }
+
+    public static ParseQuery<Event> getQuery() {
+        return ParseQuery.getQuery(Event.class);
     }
 }
