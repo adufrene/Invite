@@ -11,6 +11,8 @@ import android.content.Intent;
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.EventActivity;
 
+import com.parse.ParseUser;
+
 /**
  * A simple {@link Fragment} subclass.
  *
