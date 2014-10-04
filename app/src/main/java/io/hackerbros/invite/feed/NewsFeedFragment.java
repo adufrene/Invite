@@ -12,6 +12,7 @@ import android.content.Intent;
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.EventActivity;
 import io.hackerbros.invite.data.Event;
+import io.hackerbros.invite.fragments.TitledFragment;
 
 import com.parse.ParseUser;
 import com.parse.ParseQueryAdapter;

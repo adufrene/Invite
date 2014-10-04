@@ -13,7 +13,9 @@ import android.view.View;
 import android.content.Intent;
 
 import io.hackerbros.invite.R;
-import io.hackerbros.invite.feed.TitledFragment;
+import io.hackerbros.invite.fragments.TitledFragment;
+import io.hackerbros.invite.fragments.ProfileFragment;
+import io.hackerbros.invite.fragments.MapFragment;
 import io.hackerbros.invite.feed.NewsFeedFragment;
 
 public class NewsFeedActivity extends FragmentActivity {
@@ -76,8 +78,8 @@ public class NewsFeedActivity extends FragmentActivity {
             fragments = new TitledFragment[3];
 
             fragments[0] = new NewsFeedFragment();
-            fragments[1] = new NewsFeedFragment();
-            fragments[2] = new NewsFeedFragment();
+            fragments[1] = new ProfileFragment();
+            fragments[2] = new MapFragment();
         }
 
         @Override
