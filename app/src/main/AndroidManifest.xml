@@ -38,6 +38,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MainActivity"
+            android:targetActivity=".activities.LoginFeedActivity" />
+
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
 

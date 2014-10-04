@@ -22,14 +22,14 @@ public abstract class SimpleFragmentActivity extends Activity {
 
         fragment = getFragment();
         fm.beginTransaction()
-                .add(R.id.login_feed_full_fragment_container, fragment)
+                .add(R.id.fragment_container, getFragment())
                 .commit();
     }
 
     public void addFragment(Fragment newFrag) {
         Fragment newFragment = newFrag;
         fm.beginTransaction()
-                .add(R.id.login_feed_full_fragment_container, newFragment)
+                .add(R.id.fragment_container, newFragment)
                 .commit();
     }
 
