@@ -21,11 +21,12 @@
             android:layout_marginBottom="15dp"
             android:hint="Event Title" />
 
-        <ImageButton
+        <Button
             android:id="@+id/imageButton"
             android:layout_width="fill_parent"
             android:layout_height="150dp"
-            android:layout_marginBottom="0dp" />
+            android:layout_marginBottom="0dp"
+            android:text="Click to Upload Image"/>
 
         <EditText
             android:id="@+id/add_event_edit_description"

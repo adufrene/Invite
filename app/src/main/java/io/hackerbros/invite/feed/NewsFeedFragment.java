@@ -29,7 +29,6 @@ public class NewsFeedFragment extends TitledFragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
