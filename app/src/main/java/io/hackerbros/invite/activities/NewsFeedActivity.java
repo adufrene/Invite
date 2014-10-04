@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.View.OnClickListener;
+import android.view.View;
+import android.content.Intent;
 
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.feed.TitledFragment;
@@ -21,6 +24,13 @@ public class NewsFeedActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
+
+        findViewById(R.id.add_event_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(NewsFeedActivity.this, EventActivity.class));
+            }
+        });
 
         mPagerAdapter = new NewsFeedPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);

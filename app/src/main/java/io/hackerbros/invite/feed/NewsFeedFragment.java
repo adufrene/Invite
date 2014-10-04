@@ -35,13 +35,6 @@ public class NewsFeedFragment extends TitledFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
-        v.findViewById(R.id.add_event_button).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().startActivity(new Intent(getActivity(), EventActivity.class));
-            }
-        });
-
         ParseQueryAdapter.QueryFactory<Event> factory = new ParseQueryAdapter.QueryFactory<Event>() {
             @Override
             public ParseQuery<Event> create() {
