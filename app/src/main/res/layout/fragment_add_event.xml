@@ -47,5 +47,12 @@
         android:layout_below="@id/add_event_edit_location"
         android:text="Date and Time" />
 
+    <Button
+        android:id="@+id/add_event_edit_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Add" />
+
 
 </RelativeLayout>
