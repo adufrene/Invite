@@ -8,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ArrayAdapter;
 import android.content.Context;
 import android.widget.AutoCompleteTextView;
+import android.widget.RadioGroup;
 
 import java.util.ArrayList;
 import java.lang.StringBuilder;
@@ -28,8 +31,10 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 import io.hackerbros.invite.R;
+import io.hackerbros.invite.data.Event;
+import io.hackerbros.invite.network.InviteNetworkObject;
 
-public class AddEventFragment extends Fragment {
+public class AddEventFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = AddEventFragment.class.getSimpleName();
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
@@ -37,6 +42,14 @@ public class AddEventFragment extends Fragment {
     private static final String OUT_JSON = "/json";
 
     private static final String API_KEY = "AIzaSyBy5wH84ZUND8BZma_EhZg0nfTPofWPgz4";
+
+    private Button submitButton;
+    private Activity parentActivity;
+    private AddEventFragmentCallbacks addCallbacks;
+
+    public interface AddEventFragmentCallbacks {
+        public void addEventSubmitCompleteCallback();
+    }
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -58,6 +71,44 @@ public class AddEventFragment extends Fragment {
         tv.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), android.R.layout.simple_list_item_1));
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        parentActivity = getActivity();
+
+        submitButton = (Button) parentActivity.findViewById(R.id.add_event_submit_button);
+        submitButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.add_event_submit_button) {
+            constructEventsFromUserFields();
+        }
+    }
+
+    private void constructEventsFromUserFields() {
+        Event newEvent = new Event();
+
+        EditText titleField = (EditText) parentActivity.findViewById(R.id.add_event_edit_title);
+        EditText descriptionField = (EditText) parentActivity.findViewById(R.id.add_event_edit_description);
+        RadioGroup selector = (RadioGroup) parentActivity.findViewById(R.id.add_event_type_selector);
+
+        newEvent.setEventTitle(titleField.getText().toString());
+        newEvent.setEventDescription(descriptionField.getText().toString());
+        newEvent.setPublicEvent(selector.getCheckedRadioButtonId()
+                == R.id.add_event_type_selector_public ? true : false);
+
+        InviteNetworkObject.submitEventObject(newEvent);
+
+        addCallbacks.addEventSubmitCompleteCallback();
+    }
+
+    public void setAddCompleteCallback(AddEventFragmentCallbacks callback) {
+        addCallbacks = callback;
     }
 
     private ArrayList<String> autocomplete(String input) {
