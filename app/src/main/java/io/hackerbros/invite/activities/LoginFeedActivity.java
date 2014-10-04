@@ -17,6 +17,7 @@ import io.hackerbros.invite.fragments.NewsFeedFragment;
 
 public class LoginFeedActivity extends SimpleFragmentActivity implements View.OnClickListener {
    private Button addNewEventButton;
+   private boolean isLaunchLogin_DEBUG = true;
 
    public Fragment getFragment() {
       // if not logged in then return LoginFragment.createFragment();
@@ -36,8 +37,10 @@ public class LoginFeedActivity extends SimpleFragmentActivity implements View.On
 
         // setting onCreate returns null because it doesn't allow enough time to inflate view,
         // is there a better way?
-        addNewEventButton = (Button) findViewById(R.id.add_event_button);
-        addNewEventButton.setOnClickListener(this);
+        if (!isLaunchLogin_DEBUG) {
+            addNewEventButton = (Button) findViewById(R.id.add_event_button);
+            addNewEventButton.setOnClickListener(this);
+        }
     }
 
    @Override
