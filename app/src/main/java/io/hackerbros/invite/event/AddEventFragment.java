@@ -38,14 +38,19 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 import io.hackerbros.invite.R;
-import io.hackerbros.invite.activities.LoginFeedActivity;
+import io.hackerbros.invite.activities.NewsFeedActivity;
 import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.data.InviteGeoLocation;
 import io.hackerbros.invite.network.NetworkUtils;
 
-
 import com.parse.ParseException;
 import com.parse.SaveCallback;
+import com.parse.ParseUser;
+import com.parse.ParseFacebookUtils;
+
+import com.facebook.Request;
+import com.facebook.model.GraphUser;
+import com.facebook.Response;
 
 public class AddEventFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = AddEventFragment.class.getSimpleName();
@@ -55,6 +60,9 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
     private static final String OUT_JSON = "/json";
 
     private static final String API_KEY = "AIzaSyBy5wH84ZUND8BZma_EhZg0nfTPofWPgz4";
+
+    private boolean facebookIdLoaded = false;
+    private boolean getLatLngLoaded = false;
 
     private Button submitButton;
     private Activity parentActivity;
@@ -135,6 +143,15 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
         newEvent.setPublicEvent(selector.getCheckedRadioButtonId()
                 == R.id.add_event_type_selector_public ? true : false);
 
+        Request.newMeRequest(ParseFacebookUtils.getSession(), new Request.GraphUserCallback() {
+            @Override
+            public void onCompleted(GraphUser user, Response response) {
+                newEvent.setUsername(user.getId()); 
+                facebookIdLoaded = true;
+                Log.d(TAG, "Facebook loaded");
+                saveEvent(newEvent);
+            }
+        }).executeAsync();
 
         if (error == 0) {
             (new AsyncTask<Void, Void, Void>() {
@@ -154,22 +171,23 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
                 @Override
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
-                    newEvent.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.e(TAG, "Error:", e);
-                            }
-                            getActivity().finish();
-                        }
-                    });
-
-                    Intent i = new Intent(getActivity(), LoginFeedActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    getActivity().startActivity(i);
+                    getLatLngLoaded = true;
+                    Log.d(TAG, "Lat Lng saved");
+                    saveEvent(newEvent);
                 }
             }).execute();
         }
+    }
+
+    private void saveEvent(Event newEvent) {
+        if (!facebookIdLoaded || !getLatLngLoaded) {
+            return;
+        }
+        newEvent.saveInBackground();
+    
+        Intent i = new Intent(getActivity(), NewsFeedActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        getActivity().startActivity(i);
     }
 
     private ArrayList<String> autocomplete(String input) {
@@ -233,7 +251,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
         public int getCount() {
             return resultList.size();
         }
-    
+
         @Override
         public String getItem(int index) {
             return resultList.get(index);

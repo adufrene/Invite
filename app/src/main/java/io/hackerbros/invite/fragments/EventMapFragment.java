@@ -10,8 +10,11 @@ import android.util.Log;
 import android.location.Location;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import io.hackerbros.invite.data.Event;
+
+import org.json.JSONObject;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -21,10 +24,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import com.parse.ParseQuery;
 import com.parse.ParseException;
 import com.parse.FindCallback;
+import com.parse.ParseUser;
+import com.parse.ParseGeoPoint;
 
 public class EventMapFragment extends SupportMapFragment implements TitledFragment, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 
@@ -33,6 +40,7 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
     private static final String TAG = EventMapFragment.class.getSimpleName();
 
     private LocationClient mLocationClient;
+    private ArrayList<LocationStruct> otherEvents = new ArrayList<LocationStruct>();
 
     public static final String BUNDLE_LATITUDE_KEY = "bundle_latitude_key";
     public static final String BUNDLE_LONGITUDE_KEY = "bundle_longitude_key";
@@ -86,8 +94,10 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
             public void done(List<Event> events, ParseException e) {
                 if (e == null) {
                     for (Event event : events) {
-                        Log.d(TAG, "Got here");
+                        ParseGeoPoint pt = event.getLocation();
+                        otherEvents.add(new LocationStruct(new LatLng(pt.getLatitude(), pt.getLongitude()), event.getEventTitle()));
                     }
+                    plotPoints();
                 }
                 else {
                     Log.d(TAG, "Failure", e);
@@ -129,5 +139,33 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
 
         getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(currLoc, 16));        
         getMap().addMarker(new MarkerOptions().position(currLoc));
+
+        if (otherEvents.size() != 0) {
+            plotPoints();
+        }
+    }
+
+    private void plotPoints() {
+        GoogleMap gMap = getMap();
+        if (gMap == null) {
+            return;
+        }
+
+        for (LocationStruct ls : otherEvents) {
+            gMap.addMarker(new MarkerOptions()
+                    .position(ls.place)
+                    .title(ls.eventTitle)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        }    
+    }
+
+    private static class LocationStruct {
+        public LatLng place;
+        public String eventTitle;
+
+        public LocationStruct(LatLng place, String eventTitle) {
+            this.place = place;
+            this.eventTitle = eventTitle;
+        }
     }
 }
