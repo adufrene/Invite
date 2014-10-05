@@ -121,7 +121,7 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
         LatLng currLoc = new LatLng(lat, lng);
 
         ParseQuery query = ParseQuery.or(Arrays.asList(Event.getQuery().whereEqualTo(Event.PUBLIC_EVENT_KEY, true), 
-                    Event.getQuery().whereContainedIn(Event.USERNAME_KEY, FacebookUtils.getFriendsAndMe())));
+                    Event.getQuery().whereContainedIn(Event.FB_ID_KEY, FacebookUtils.getFriendsAndMe())));
         ParseGeoPoint currLocation = new ParseGeoPoint(lat, lng);
         query.whereWithinMiles(Event.LOCATION_KEY, currLocation, 10); 
         query.findInBackground(new FindCallback<Event>() {
