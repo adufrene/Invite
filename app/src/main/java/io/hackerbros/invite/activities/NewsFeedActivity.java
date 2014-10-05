@@ -18,10 +18,12 @@ import android.util.Log;
 import android.location.Location;
 import android.widget.Toast;
 import android.content.IntentSender;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.fragments.TitledFragment;
-import io.hackerbros.invite.fragments.ProfileFragment;
 import io.hackerbros.invite.fragments.EventMapFragment;
 import io.hackerbros.invite.feed.NewsFeedFragment;
 
@@ -117,6 +119,25 @@ public class NewsFeedActivity extends FragmentActivity implements
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.news_feed_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
     private boolean servicesConnected() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 
@@ -175,7 +196,7 @@ public class NewsFeedActivity extends FragmentActivity implements
         public NewsFeedPagerAdapter(FragmentManager fm) {
             super(fm);
             
-            fragments = new Fragment[] { new NewsFeedFragment(), new ProfileFragment(), new EventMapFragment() };
+            fragments = new Fragment[] { new NewsFeedFragment(), new NewsFeedFragment(), new EventMapFragment() };
         }
 
         @Override

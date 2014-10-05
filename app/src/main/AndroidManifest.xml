@@ -61,6 +61,12 @@
             android:parentActivityName=".activities.NewsFeedActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+    <activity
+            android:name=".activities.ProfileActivity"
+            android:parentActivityName=".activities.NewsFeedActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+
     <activity 
             android:name=".activities.NewsFeedActivity" 
             android:screenOrientation="portrait"
