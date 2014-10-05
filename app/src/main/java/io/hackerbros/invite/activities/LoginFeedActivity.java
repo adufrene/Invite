@@ -27,6 +27,7 @@ public class LoginFeedActivity extends SimpleFragmentActivity {
 
         if (ParseUser.getCurrentUser() != null && !ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
             startActivity(new Intent(this, NewsFeedActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            finish();
         }
     }
 
