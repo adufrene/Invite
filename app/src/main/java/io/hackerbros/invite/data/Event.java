@@ -11,6 +11,8 @@ public class Event extends ParseObject {
     public static final String EVENT_TITLE_KEY = "Title";
     public static final String EVENT_DESCRIPTION_KEY = "Description";
     public static final String DATE_TIME_KEY = "Timestamp";
+    public static final String START_DATE_TIME_KEY = "StartTime";
+    public static final String END_DATE_TIME_KEY = "EndTime";
     public static final String LOCATION_KEY = "Location";
     public static final String PUBLIC_EVENT_KEY = "isPublic";
     public static final String USERNAME_KEY = "Username";
@@ -37,6 +39,22 @@ public class Event extends ParseObject {
 
     public void setDateTime(Date dateTime) {
         put(DATE_TIME_KEY, dateTime.getTime());
+    }
+
+    public Date getStartDateTime() {
+        return new Date(getLong(START_DATE_TIME_KEY));
+    }
+
+    public void setStartDateTime(Date dateTime) {
+        put(START_DATE_TIME_KEY, dateTime.getTime());
+    }
+
+    public Date getEndDateTime() {
+        return new Date(getLong(END_DATE_TIME_KEY));
+    }
+
+    public void setEndDateTime(Date dateTime) {
+        put(END_DATE_TIME_KEY, dateTime.getTime());
     }
 
     public ParseGeoPoint getLocation() {

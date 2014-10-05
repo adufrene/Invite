@@ -80,6 +80,9 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
     private Button timeStartButton;
     private Button timeEndButton;
 
+    private Date startDateTime = new Date();
+    private Date endDateTime = new Date();
+
     private static final String FRAG_TAG_DATE_PICKER_START = "datePickerDialogFragmentStart";
     private static final String FRAG_TAG_DATE_PICKER_END = "datePickerDialogFragmentEnd";
     private static final int FRAG_TAG_TIME_PICKER_START = 0;
@@ -193,6 +196,13 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
 
         newEvent.setUsername(FacebookUtils.getFacebookId());
 
+        newEvent.setStartDateTime(startDateTime);
+        newEvent.setEndDateTime(endDateTime);
+        if((endDateTime.getTime() - startDateTime.getTime()) < 0) {
+            Toast.makeText(getActivity().getApplicationContext(), "Invalid start/end, date/time fields", Toast.LENGTH_LONG).show();
+            error++;
+        }
+
         if (error == 0) {
             (new AsyncTask<Void, Void, Void>() {
                 @Override
@@ -280,8 +290,14 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
         //0 or 1
         if(calendarDatePickerDialog.getTag().equals(FRAG_TAG_DATE_PICKER_START)) {
             dateStartButton.setText((month+1) + "/" + day + "/" + year);
+            startDateTime.setYear(year);
+            startDateTime.setMonth(month);
+            startDateTime.setDate(day);
         } else {
-            dateEndButton.setText((month) + "/" + day + "/" + year);
+            dateEndButton.setText((month+1) + "/" + day + "/" + year);
+            endDateTime.setYear(year);
+            endDateTime.setMonth(month);
+            endDateTime.setDate(day);
         }
     }
 
@@ -294,8 +310,12 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
             String result = output.format(dateObj);
             if(valCurClicked == FRAG_TAG_TIME_PICKER_START) {
                 timeStartButton.setText(result);
+                startDateTime.setHours(hr);
+                startDateTime.setMinutes(min);
             } else {
                 timeEndButton.setText(result);
+                endDateTime.setHours(hr);
+                endDateTime.setMinutes(min);
             }
         } catch (java.text.ParseException e) {
             e.printStackTrace();
