@@ -39,8 +39,4 @@ public class LoginFeedActivity extends SimpleFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
-
-    public void addEventSubmitCompleteCallback() {
-        removeFragment(eventFrag);
-    }
 }

@@ -2,12 +2,9 @@ package io.hackerbros.invite.event;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,10 @@ import android.content.Context;
 import android.widget.AutoCompleteTextView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 import java.net.HttpURLConnection;
@@ -31,7 +31,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,11 +44,14 @@ import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.data.InviteGeoLocation;
 import io.hackerbros.invite.network.NetworkUtils;
 
+import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
+import com.doomonafireball.betterpickers.timepicker.TimePickerBuilder;
+import com.doomonafireball.betterpickers.timepicker.TimePickerDialogFragment;
 
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 
-public class AddEventFragment extends Fragment implements View.OnClickListener {
+public class AddEventFragment extends Fragment implements View.OnClickListener, CalendarDatePickerDialog.OnDateSetListener, TimePickerDialogFragment.TimePickerDialogHandler {
     private static final String TAG = AddEventFragment.class.getSimpleName();
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
@@ -56,12 +60,24 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
 
     private static final String API_KEY = "AIzaSyBy5wH84ZUND8BZma_EhZg0nfTPofWPgz4";
 
-    private Button submitButton;
     private Activity parentActivity;
 
     private String selectedLocation;
     JSONObject addrList;
     Event newEvent = new Event();
+
+    private Button submitButton;
+    private Button dateStartButton;
+    private Button dateEndButton;
+    private Button timeStartButton;
+    private Button timeEndButton;
+
+    private static final String FRAG_TAG_DATE_PICKER_START = "datePickerDialogFragmentStart";
+    private static final String FRAG_TAG_DATE_PICKER_END = "datePickerDialogFragmentEnd";
+    private static final int FRAG_TAG_TIME_PICKER_START = 0;
+    private static final int FRAG_TAG_TIME_PICKER_END = 1;
+
+    private int valCurClicked = -1;
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -88,6 +104,16 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        // button setup for date and time picking
+        dateStartButton = (Button) v.findViewById(R.id.date_spin_start);
+        dateStartButton.setOnClickListener(this);
+        dateEndButton = (Button) v.findViewById(R.id.date_spin_end);
+        dateEndButton.setOnClickListener(this);
+        timeStartButton = (Button) v.findViewById(R.id.time_spin_start);
+        timeStartButton.setOnClickListener(this);
+        timeEndButton = (Button) v.findViewById(R.id.time_spin_end);
+        timeEndButton.setOnClickListener(this);
+
         return v;
     }
 
@@ -103,8 +129,30 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.add_event_submit_button) {
+        int val = v.getId();
+        FragmentManager fm = getChildFragmentManager();
+        Calendar cal = Calendar.getInstance();
+
+        CalendarDatePickerDialog calendarDatePickerDialog = CalendarDatePickerDialog
+                .newInstance(AddEventFragment.this, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+                cal.get(Calendar.DATE));
+        TimePickerBuilder tpb = new TimePickerBuilder()
+                .setFragmentManager(getChildFragmentManager())
+                .addTimePickerDialogHandler(AddEventFragment.this)
+                .setStyleResId(R.style.BetterPickersDialogFragment_Light);
+
+        if(val == R.id.add_event_submit_button) {
             constructEventsFromUserFields();
+        } else if(val == R.id.date_spin_start) {
+            calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER_START);
+        } else if(val == R.id.date_spin_end) {
+            calendarDatePickerDialog.show(fm, FRAG_TAG_DATE_PICKER_END);
+        } else if(val == R.id.time_spin_start) {
+            valCurClicked = FRAG_TAG_TIME_PICKER_START;
+            tpb.setReference(FRAG_TAG_TIME_PICKER_START).show();
+        } else if(val == R.id.time_spin_end) {
+            valCurClicked = FRAG_TAG_TIME_PICKER_END;
+            tpb.setReference(FRAG_TAG_TIME_PICKER_END).show();
         }
     }
 
@@ -220,6 +268,35 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
         }
 
         return resultList;
+    }
+
+    @Override
+    public void onDateSet(CalendarDatePickerDialog calendarDatePickerDialog, int year, int month, int day) {
+        //0 or 1
+        if(calendarDatePickerDialog.getTag().equals(FRAG_TAG_DATE_PICKER_START)) {
+            dateStartButton.setText((month+1) + "/" + day + "/" + year);
+        } else {
+            dateEndButton.setText((month) + "/" + day + "/" + year);
+        }
+    }
+
+    @Override
+    public void onDialogTimeSet(int sec, int hr, int min) {
+        try {
+            final SimpleDateFormat input = new SimpleDateFormat("HH:mm");
+            final SimpleDateFormat output = new SimpleDateFormat("h:mm aa");
+            final Date dateObj = input.parse(((hr<10) ? ("0"+hr) : hr) + ":" + ((min < 10) ? ("0"+min) : min));
+            String result = output.format(dateObj);
+            if(valCurClicked == FRAG_TAG_TIME_PICKER_START) {
+                timeStartButton.setText(result);
+            } else {
+                timeEndButton.setText(result);
+            }
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        valCurClicked = -1;
     }
 
     private class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {

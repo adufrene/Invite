@@ -28,4 +28,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:5.0+'
 
     compile project(':facebook-android-sdk-3.19.0:facebook')
+
+    compile ("com.doomonafireball.betterpickers:library:1.5.2") {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
 }
