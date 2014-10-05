@@ -81,7 +81,8 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
                 title.setText(event.getEventTitle());
                 description.setText(event.getEventDescription());
                 location.setVisibility(View.GONE);
-                time.setText(sdf.format(event.getUpdatedAt())); 
+                time.setText(sdf.format(event.getUpdatedAt()));
+
 
                 return view;
             }
