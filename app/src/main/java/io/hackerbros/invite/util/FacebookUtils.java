@@ -26,7 +26,13 @@ public class FacebookUtils {
         friendsList.addAll(ids);
     }
 
-    public HashSet<String> getFriends() {
+    public static HashSet<String> getFriends() {
         return new HashSet<String>(friendsList);
+    }
+
+    public static HashSet<String> getFriendsAndMe() {
+        HashSet<String> temp = getFriends();
+        temp.add(getFacebookId());
+        return temp;
     }
 }

@@ -11,11 +11,13 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.EventActivity;
 import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.fragments.TitledFragment;
+import io.hackerbros.invite.util.FacebookUtils;
 
 import com.parse.ParseUser;
 import com.parse.ParseQueryAdapter;
@@ -59,10 +61,10 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
             @Override
             public ParseQuery<Event> create() {
                 ParseQuery<Event> query = Event.getQuery();
-                if (filter == FilterTypes.PUBLIC) 
+                if (filter == FilterTypes.PUBLIC)
                     query.whereEqualTo(Event.PUBLIC_EVENT_KEY, true);
-//              else if (filter == FilterTypes.FRIENDS)
-//                  filter by friends
+                else if (filter == FilterTypes.FRIENDS)
+                    query.whereContainedIn(Event.USERNAME_KEY, FacebookUtils.getFriendsAndMe());
                 query.orderByDescending("updatedAt");
                 return query;
             }

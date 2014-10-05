@@ -11,8 +11,10 @@ import android.location.Location;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.hackerbros.invite.data.Event;
+import io.hackerbros.invite.util.FacebookUtils;
 
 import org.json.JSONObject;
 
@@ -118,9 +120,8 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
         double lng = location.getLongitude();
         LatLng currLoc = new LatLng(lat, lng);
 
-        ParseQuery<Event> query = Event.getQuery();
-        query.whereEqualTo(Event.PUBLIC_EVENT_KEY, true);
-        // or in friends
+        ParseQuery query = ParseQuery.or(Arrays.asList(Event.getQuery().whereEqualTo(Event.PUBLIC_EVENT_KEY, true), 
+                    Event.getQuery().whereContainedIn(Event.USERNAME_KEY, FacebookUtils.getFriendsAndMe())));
         ParseGeoPoint currLocation = new ParseGeoPoint(lat, lng);
         query.whereWithinMiles(Event.LOCATION_KEY, currLocation, 10); 
         query.findInBackground(new FindCallback<Event>() {
