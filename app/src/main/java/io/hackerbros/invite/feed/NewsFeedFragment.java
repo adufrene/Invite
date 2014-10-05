@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
@@ -29,7 +30,7 @@ import com.facebook.widget.ProfilePictureView;
  * A simple {@link Fragment} subclass.
  *
  */
-public class NewsFeedFragment extends Fragment implements TitledFragment {
+public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String BUNDLE_FILTER_KEY = "bundle_filter_key";
 
@@ -47,6 +48,7 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
     }
 
     private FilterTypes filter;
+    private SwipeRefreshLayout srl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,11 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
+        srl = (SwipeRefreshLayout) v.findViewById(R.id.swipe_layout);
+        srl.setOnRefreshListener(this);
+        int firstColor = R.color.refresh_blue;
+        int secondColor = android.R.color.white;
+        srl.setColorScheme(firstColor, secondColor, firstColor, secondColor);
         Bundle args = getArguments();
         filter = (FilterTypes) args.getSerializable(BUNDLE_FILTER_KEY);
 
@@ -75,6 +82,7 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
         eventAdapter = new ParseQueryAdapter<Event>(getActivity(), factory) {
             @Override
             public View getItemView(Event event, View view, ViewGroup parent) {
+                srl.setRefreshing(false);
                 if (view == null) {
                     view = View.inflate(getActivity(), R.layout.event_row, null);
                 }
@@ -92,7 +100,6 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
                 description.setText(event.getEventDescription());
                 location.setVisibility(View.GONE);
                 time.setText(sdf.format(event.getStartDateTime()));
-
 
                 return view;
             }
@@ -113,6 +120,14 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
     @Override
     public String getTitle() {
         return "News Feed";
+    }
+
+    @Override
+    public void onRefresh() {
+        if (eventAdapter != null) {
+            srl.setRefreshing(true);
+            eventAdapter.loadObjects();
+        }
     }
 
 }
