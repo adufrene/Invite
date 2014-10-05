@@ -1,4 +1,5 @@
 <resources>
     <color name="invite_main_color">#3fbf7d</color>
     <color name="background_color">#E0EEEE</color>
+    <color name="line_color">#CCCCCC</color>
 </resources>
