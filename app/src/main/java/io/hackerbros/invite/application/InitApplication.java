@@ -30,7 +30,7 @@ public class InitApplication extends Application {
                   Log.d(TAG, "successfully subscribed to channel");
               }
               else {
-                    Log.d(TAG, "failed to subscribe for push", e);
+                  Log.d(TAG, "failed to subscribe for push", e);
               }
           }
       });
