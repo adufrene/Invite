@@ -9,6 +9,10 @@ import android.widget.Toast;
 import android.util.Log;
 import android.location.Location;
 
+import java.util.List;
+
+import io.hackerbros.invite.data.Event;
+
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,6 +21,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
+
+import com.parse.ParseQuery;
+import com.parse.ParseException;
+import com.parse.FindCallback;
 
 public class EventMapFragment extends SupportMapFragment implements TitledFragment, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 
@@ -72,6 +80,21 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, parent, savedInstanceState);
+        
+        ParseQuery<Event> query = Event.getQuery();
+        query.findInBackground(new FindCallback<Event>() {
+            public void done(List<Event> events, ParseException e) {
+                if (e == null) {
+                    for (Event event : events) {
+                        Log.d(TAG, "Got here");
+                    }
+                }
+                else {
+                    Log.d(TAG, "Failure", e);
+
+                }
+            }
+        });
 
         initMap();
         return v; 
