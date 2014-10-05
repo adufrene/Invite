@@ -38,6 +38,8 @@
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:padding="10dp"
+        android:layout_marginTop="-10dp"
+        android:paddingTop="0dp"
         android:textSize="14sp"
         android:ellipsize="end" />
     
@@ -52,6 +54,9 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center_vertical">
 
         <!--<Button
@@ -92,7 +97,12 @@
              </TextView>
         </RelativeLayout>
 
+        <View
+            android:layout_width="10dp"
+            android:layout_height="0dp" />
+
         <RelativeLayout
+            android:id="@+id/event_location_map"
             android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -105,8 +115,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_dialog_map" />
-
         </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/event_rsvp_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_rounded_button_style_blue"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="RSVP"
+            android:textColor="#FFFFFF"
+            android:layout_alignParentRight="true"/>
 
     </LinearLayout>
 
@@ -116,6 +141,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:textColor="#666666"
+        android:layout_margin="10dp"
         android:ellipsize="marquee" />
 
     <TextView
@@ -123,6 +149,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:layout_margin="10dp"
+        android:layout_marginTop="0dp"/>
 
 </LinearLayout>
