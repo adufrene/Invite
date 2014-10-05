@@ -3,55 +3,112 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:layout_gravity="center"
-        android:background="@android:drawable/dialog_holo_light_frame"
+        android:background="@android:color/white"
         android:orientation="vertical"
-    android:weightSum="1">
+        android:paddingBottom="10dp"
+        android:weightSum="1">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="-45dp"
-        android:src="@drawable/event_cover_photo"
-         />
-        
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:layout_marginBottom="6dp" >
-        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+
         <com.facebook.widget.ProfilePictureView
             android:id="@+id/profile_image"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center_vertical" />
+            android:layout_marginRight="10dp" />
 
         <TextView
             android:id="@+id/event_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
             android:singleLine="false" />
 
     </LinearLayout>
-    
+
     <TextView
         android:id="@+id/event_description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:maxLines="2"
-        android:paddingBottom="10dp"
+        android:padding="10dp"
         android:textSize="14sp"
         android:ellipsize="end" />
-
-    <TextView
-        android:id="@+id/event_location"
+    
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:singleLine="false" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="-45dp"
+        android:layout_marginBottom="-30dp"
+        android:src="@drawable/event_cover_photo" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/friends_list_button"
+            android:text="18"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_action_user"
+            android:background="@color/white"
+            />-->
+
+        <RelativeLayout
+            android:clickable="true"
+            android:background="@drawable/border"
+            android:layout_width="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_height="40dp" >
+
+
+            <ImageView
+                android:id="@+id/friends_list_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/text"
+                android:text="18"
+                android:textAppearance="?android:attr/textAppearanceButton"
+                android:layout_toRightOf="@id/friends_list_icon"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+             </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/border"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_dialog_map" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/event_start_time"
@@ -60,5 +117,12 @@
         android:textSize="12sp"
         android:textColor="#666666"
         android:ellipsize="marquee" />
+
+    <TextView
+        android:id="@+id/event_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:singleLine="false" />
 
 </LinearLayout>
