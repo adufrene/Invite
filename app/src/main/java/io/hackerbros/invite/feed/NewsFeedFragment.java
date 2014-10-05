@@ -21,6 +21,8 @@ import com.parse.ParseUser;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseQuery;
 
+import com.facebook.widget.ProfilePictureView;
+
 /**
  * A simple {@link Fragment} subclass.
  *
@@ -74,6 +76,9 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
                 if (view == null) {
                     view = View.inflate(getActivity(), R.layout.event_row, null);
                 }
+
+                ProfilePictureView ppv = (ProfilePictureView) view.findViewById(R.id.profile_image);
+                ppv.setProfileId(event.getUsername());
 
                 TextView title = (TextView) view.findViewById(R.id.event_title);
                 TextView description = (TextView) view.findViewById(R.id.event_description);

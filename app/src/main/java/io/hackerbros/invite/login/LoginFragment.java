@@ -44,7 +44,7 @@ public class LoginFragment extends Fragment {
   }
 
   private void createParseUser() {
-    ParseFacebookUtils.logIn(getActivity(), new LogInCallback() {
+    ParseFacebookUtils.logIn(Arrays.asList("user_friends"), getActivity(), new LogInCallback() {
       @Override
       public void done(ParseUser user, ParseException err) {
         if (user ==null) {

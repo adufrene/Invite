@@ -25,8 +25,9 @@ public class LoginFeedActivity extends SimpleFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (ParseUser.getCurrentUser() != null && !ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
-            startActivity(new Intent(this, NewsFeedActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        if (ParseUser.getCurrentUser() != null && !ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())
+                && ParseFacebookUtils.getSession() != null) {
+            startActivity(new Intent(this, LoadingActivity.class));
             finish();
         }
     }
