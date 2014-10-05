@@ -59,7 +59,7 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
         srl = (SwipeRefreshLayout) v.findViewById(R.id.swipe_layout);
         srl.setOnRefreshListener(this);
         int firstColor = R.color.refresh_blue;
-        int secondColor = android.R.color.white;
+        int secondColor = R.color.background_color;
         srl.setColorScheme(firstColor, secondColor, firstColor, secondColor);
         Bundle args = getArguments();
         filter = (FilterTypes) args.getSerializable(BUNDLE_FILTER_KEY);
