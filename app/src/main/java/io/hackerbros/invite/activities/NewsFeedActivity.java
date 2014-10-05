@@ -32,9 +32,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 
-public class NewsFeedActivity extends FragmentActivity implements 
-    GooglePlayServicesClient.ConnectionCallbacks,
-    GooglePlayServicesClient.OnConnectionFailedListener {
+public class NewsFeedActivity extends FragmentActivity {
 
     private static final String TAG = NewsFeedActivity.class.getSimpleName();
     private static final String DIALOG_ERROR = "dialog_error";
@@ -49,8 +47,6 @@ public class NewsFeedActivity extends FragmentActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
-
-        mLocationClient = new LocationClient(this, this, this);
 
         findViewById(R.id.add_event_button).setOnClickListener(new OnClickListener() {
             @Override
@@ -96,17 +92,6 @@ public class NewsFeedActivity extends FragmentActivity implements
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mLocationClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        mLocationClient.disconnect();
-        super.onStop();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -156,33 +141,6 @@ public class NewsFeedActivity extends FragmentActivity implements
         return false;
     }
 
-    @Override
-    public void onConnected(Bundle dataBundle) {
-        mPagerAdapter.setLatLng(mLocationClient.getLastLocation());
-    }
-
-    @Override
-    public void onDisconnected() {
-        Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (connectionResult.hasResolution()) {
-            try {
-                connectionResult.startResolutionForResult(
-                        this,
-                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
-            }
-            catch (IntentSender.SendIntentException e) {
-                Log.e(TAG, e.getClass().getSimpleName(), e);    
-            }
-        }
-        else {
-            showErrorDialog(connectionResult.getErrorCode());
-        }
-    }
-
     private void showErrorDialog(int errorCode) {
         ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
         Bundle args = new Bundle();
@@ -220,15 +178,6 @@ public class NewsFeedActivity extends FragmentActivity implements
                    return "Map";
             }
             return null;
-        }
-
-        public void setLatLng(Location loc) {
-            double lat = loc.getLatitude();
-            double lng = loc.getLongitude();
-            Bundle args = new Bundle();
-            args.putDouble(EventMapFragment.BUNDLE_LATITUDE_KEY, lat);
-            args.putDouble(EventMapFragment.BUNDLE_LONGITUDE_KEY, lng);
-            fragments[2].setArguments(args);
         }
     }
 
