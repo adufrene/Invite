@@ -153,8 +153,23 @@ public class NewsFeedActivity extends FragmentActivity {
         private Fragment[] fragments;
         public NewsFeedPagerAdapter(FragmentManager fm) {
             super(fm);
+
+            NewsFeedFragment frag1 = new NewsFeedFragment();
+            Bundle args1 = new Bundle();
+            args1.putSerializable(NewsFeedFragment.BUNDLE_FILTER_KEY, NewsFeedFragment.FilterTypes.PUBLIC);
+            frag1.setArguments(args1);
+            frag1.setRetainInstance(true);
+
+            NewsFeedFragment frag2 = new NewsFeedFragment();
+            Bundle args2 = new Bundle();
+            args2.putSerializable(NewsFeedFragment.BUNDLE_FILTER_KEY, NewsFeedFragment.FilterTypes.FRIENDS);
+            frag2.setArguments(args2);
+            frag2.setRetainInstance(true);
+
+            EventMapFragment frag3 = new EventMapFragment();
+            frag3.setRetainInstance(true);
             
-            fragments = new Fragment[] { new NewsFeedFragment(), new NewsFeedFragment(), new EventMapFragment() };
+            fragments = new Fragment[] { frag1, frag2, frag3 };
         }
 
         @Override

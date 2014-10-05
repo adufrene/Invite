@@ -4,6 +4,7 @@ import java.util.Date;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseClassName;
+import com.parse.ParseGeoPoint;
 
 @ParseClassName("Events")
 public class Event extends ParseObject {
@@ -12,6 +13,7 @@ public class Event extends ParseObject {
     public static final String DATE_TIME_KEY = "Timestamp";
     public static final String LOCATION_KEY = "Location";
     public static final String PUBLIC_EVENT_KEY = "isPublic";
+    public static final String USERNAME_KEY = "Username";
 
     public String getEventTitle() {
         return getString(EVENT_TITLE_KEY);
@@ -37,8 +39,8 @@ public class Event extends ParseObject {
         put(DATE_TIME_KEY, dateTime.getTime());
     }
 
-    public String getLocation() {
-        return getString(LOCATION_KEY);
+    public ParseGeoPoint getLocation() {
+        return getParseGeoPoint(LOCATION_KEY);
     }
 
     public void setLocation(InviteGeoLocation location) {
@@ -51,6 +53,14 @@ public class Event extends ParseObject {
 
     public void setPublicEvent(boolean publicEvent) {
         put(PUBLIC_EVENT_KEY, publicEvent);
+    }
+
+    public String getUsername() {
+        return getString(USERNAME_KEY);
+    }
+
+    public void setUsername(String username) {
+        put(USERNAME_KEY, username);
     }
 
     public static ParseQuery<Event> getQuery() {

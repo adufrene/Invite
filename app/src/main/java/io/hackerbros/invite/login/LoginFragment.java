@@ -8,11 +8,12 @@ import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
+import android.app.ProgressDialog;
 
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.util.SharedPrefsUtils;
 import io.hackerbros.invite.activities.SimpleFragmentActivity;
-import io.hackerbros.invite.activities.NewsFeedActivity;
+import io.hackerbros.invite.activities.LoadingActivity;
 
 import com.parse.ParseUser;
 import com.parse.ParseException;
@@ -44,16 +45,22 @@ public class LoginFragment extends Fragment {
   }
 
   private void createParseUser() {
-    ParseFacebookUtils.logIn(getActivity(), new LogInCallback() {
+    final ProgressDialog pd = new ProgressDialog(getActivity());
+    pd.setMessage("Please Wait...");
+    pd.setIndeterminate(true);
+    pd.setCancelable(false);
+    pd.show();
+    ParseFacebookUtils.logIn(Arrays.asList("user_friends"), getActivity(), new LogInCallback() {
       @Override
       public void done(ParseUser user, ParseException err) {
+        pd.dismiss();
         if (user ==null) {
           Log.d(TAG, "User canceled");
         }
         else {
           Log.d(TAG, "User logged in");
           getActivity().finish();
-          getActivity().startActivity(new Intent(getActivity(), NewsFeedActivity.class));
+          getActivity().startActivity(new Intent(getActivity(), LoadingActivity.class));
         }
       }
     });
