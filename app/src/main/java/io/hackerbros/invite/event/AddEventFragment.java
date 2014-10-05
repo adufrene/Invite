@@ -182,7 +182,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
         int error = 0;
 
         //confirm address
-        if(selectedLocation.isEmpty()) {
+        if(selectedLocation == null || selectedLocation.isEmpty()) {
             error++;
             Toast.makeText(getActivity().getApplicationContext(), "Address incorrect", Toast.LENGTH_LONG).show();
         }
