@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.EventActivity;
@@ -22,7 +23,7 @@ import com.parse.ParseQuery;
  * A simple {@link Fragment} subclass.
  *
  */
-public class NewsFeedFragment extends TitledFragment {
+public class NewsFeedFragment extends Fragment implements TitledFragment {
     private ParseQueryAdapter<Event> eventAdapter;
 
     public NewsFeedFragment() {

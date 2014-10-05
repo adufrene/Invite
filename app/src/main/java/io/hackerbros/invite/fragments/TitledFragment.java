@@ -1,7 +1,5 @@
 package io.hackerbros.invite.fragments;
 
-import android.support.v4.app.Fragment;
-
-public abstract class TitledFragment extends Fragment {
+public interface TitledFragment {
     public abstract String getTitle();
 }
