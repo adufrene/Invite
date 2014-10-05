@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.content.Context;
 import android.widget.AutoCompleteTextView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -74,11 +75,11 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
     JSONObject addrList;
     Event newEvent = new Event();
 
-    private Button submitButton;
-    private Button dateStartButton;
-    private Button dateEndButton;
-    private Button timeStartButton;
-    private Button timeEndButton;
+    private TextView submitButton;
+    private TextView dateStartButton;
+    private TextView dateEndButton;
+    private TextView timeStartButton;
+    private TextView timeEndButton;
 
     private Date startDateTime = new Date();
     private Date endDateTime = new Date();
@@ -87,6 +88,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
     private static final String FRAG_TAG_DATE_PICKER_END = "datePickerDialogFragmentEnd";
     private static final int FRAG_TAG_TIME_PICKER_START = 0;
     private static final int FRAG_TAG_TIME_PICKER_END = 1;
+    private static final int ONE_HOUR = 10800000;
 
     private int valCurClicked = -1;
 
@@ -115,15 +117,24 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
             }
         });
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa");
+        Calendar cal = Calendar.getInstance();
+
         // button setup for date and time picking
-        dateStartButton = (Button) v.findViewById(R.id.date_spin_start);
+        dateStartButton = (TextView) v.findViewById(R.id.date_spin_start);
         dateStartButton.setOnClickListener(this);
-        dateEndButton = (Button) v.findViewById(R.id.date_spin_end);
+        dateStartButton.setText(dateFormat.format(cal.getTime()));
+        dateEndButton = (TextView) v.findViewById(R.id.date_spin_end);
         dateEndButton.setOnClickListener(this);
-        timeStartButton = (Button) v.findViewById(R.id.time_spin_start);
+        dateEndButton.setText(dateFormat.format(cal.getTime()));
+
+        timeStartButton = (TextView) v.findViewById(R.id.time_spin_start);
         timeStartButton.setOnClickListener(this);
-        timeEndButton = (Button) v.findViewById(R.id.time_spin_end);
+        timeStartButton.setText(timeFormat.format(cal.getTime()));
+        timeEndButton = (TextView) v.findViewById(R.id.time_spin_end);
         timeEndButton.setOnClickListener(this);
+        timeEndButton.setText(timeFormat.format(cal.getTime()));
 
         return v;
     }
