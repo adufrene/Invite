@@ -171,9 +171,9 @@ public class NewsFeedActivity extends FragmentActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                   return "News Feed";
+                   return "Public Feed";
                 case 1:
-                   return "Profile";
+                   return "Friends Feed";
                 case 2:
                    return "Map";
             }

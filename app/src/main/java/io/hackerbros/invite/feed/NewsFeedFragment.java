@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import java.text.SimpleDateFormat;
+
 import io.hackerbros.invite.R;
 import io.hackerbros.invite.activities.EventActivity;
 import io.hackerbros.invite.data.Event;
@@ -24,6 +26,7 @@ import com.parse.ParseQuery;
  *
  */
 public class NewsFeedFragment extends Fragment implements TitledFragment {
+    private static SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a - dd MMM yy");
     private ParseQueryAdapter<Event> eventAdapter;
 
     public NewsFeedFragment() {
@@ -72,8 +75,13 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
                 TextView title = (TextView) view.findViewById(R.id.event_title);
                 TextView description = (TextView) view.findViewById(R.id.event_description);
 
+                TextView location = (TextView) view.findViewById(R.id.event_location);
+                TextView time = (TextView) view.findViewById(R.id.event_start_time);
+
                 title.setText(event.getEventTitle());
                 description.setText(event.getEventDescription());
+                location.setVisibility(View.GONE);
+                time.setText(sdf.format(event.getUpdatedAt())); 
 
                 return view;
             }
