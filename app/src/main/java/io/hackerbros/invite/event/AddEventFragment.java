@@ -42,6 +42,7 @@ import io.hackerbros.invite.activities.NewsFeedActivity;
 import io.hackerbros.invite.data.Event;
 import io.hackerbros.invite.data.InviteGeoLocation;
 import io.hackerbros.invite.network.NetworkUtils;
+import io.hackerbros.invite.util.FacebookUtils;
 
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -60,9 +61,6 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
     private static final String OUT_JSON = "/json";
 
     private static final String API_KEY = "AIzaSyBy5wH84ZUND8BZma_EhZg0nfTPofWPgz4";
-
-    private boolean facebookIdLoaded = false;
-    private boolean getLatLngLoaded = false;
 
     private Button submitButton;
     private Activity parentActivity;
@@ -143,15 +141,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
         newEvent.setPublicEvent(selector.getCheckedRadioButtonId()
                 == R.id.add_event_type_selector_public ? true : false);
 
-        Request.newMeRequest(ParseFacebookUtils.getSession(), new Request.GraphUserCallback() {
-            @Override
-            public void onCompleted(GraphUser user, Response response) {
-                newEvent.setUsername(user.getId()); 
-                facebookIdLoaded = true;
-                Log.d(TAG, "Facebook loaded");
-                saveEvent(newEvent);
-            }
-        }).executeAsync();
+        newEvent.setUsername(FacebookUtils.getFacebookId());
 
         if (error == 0) {
             (new AsyncTask<Void, Void, Void>() {
@@ -171,8 +161,6 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
                 @Override
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
-                    getLatLngLoaded = true;
-                    Log.d(TAG, "Lat Lng saved");
                     saveEvent(newEvent);
                 }
             }).execute();
@@ -180,9 +168,6 @@ public class AddEventFragment extends Fragment implements View.OnClickListener {
     }
 
     private void saveEvent(Event newEvent) {
-        if (!facebookIdLoaded || !getLatLngLoaded) {
-            return;
-        }
         newEvent.saveInBackground();
     
         Intent i = new Intent(getActivity(), NewsFeedActivity.class);
