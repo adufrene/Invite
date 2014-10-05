@@ -89,22 +89,6 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, parent, savedInstanceState);
         
-        ParseQuery<Event> query = Event.getQuery();
-        query.findInBackground(new FindCallback<Event>() {
-            public void done(List<Event> events, ParseException e) {
-                if (e == null) {
-                    for (Event event : events) {
-                        ParseGeoPoint pt = event.getLocation();
-                        otherEvents.add(new LocationStruct(new LatLng(pt.getLatitude(), pt.getLongitude()), event.getEventTitle()));
-                    }
-                    plotPoints();
-                }
-                else {
-                    Log.d(TAG, "Failure", e);
-
-                }
-            }
-        });
 
         initMap();
         return v; 
@@ -128,35 +112,50 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
         if (!mLocationClient.isConnected()) {
             return;
         }
-        UiSettings settings = getMap().getUiSettings();
-        settings.setAllGesturesEnabled(true);
-        settings.setMyLocationButtonEnabled(true);
 
         Location location = mLocationClient.getLastLocation();
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         LatLng currLoc = new LatLng(lat, lng);
 
+        ParseQuery<Event> query = Event.getQuery();
+        query.whereEqualTo(Event.PUBLIC_EVENT_KEY, true);
+        // or in friends
+        ParseGeoPoint currLocation = new ParseGeoPoint(lat, lng);
+        query.whereWithinMiles(Event.LOCATION_KEY, currLocation, 10); 
+        query.findInBackground(new FindCallback<Event>() {
+            public void done(List<Event> events, ParseException e) {
+                if (e == null) {
+                    for (Event event : events) {
+                        ParseGeoPoint pt = event.getLocation();
+
+                        plotPoint(new LocationStruct(new LatLng(pt.getLatitude(), pt.getLongitude()), event.getEventTitle()));
+                    }
+                }
+                else {
+                    Log.d(TAG, "Failure", e);
+
+                }
+            }
+        });
+        UiSettings settings = getMap().getUiSettings();
+        settings.setAllGesturesEnabled(true);
+        settings.setMyLocationButtonEnabled(true);
+
         getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(currLoc, 16));        
         getMap().addMarker(new MarkerOptions().position(currLoc));
-
-        if (otherEvents.size() != 0) {
-            plotPoints();
-        }
     }
 
-    private void plotPoints() {
+    private void plotPoint(LocationStruct ls) {
         GoogleMap gMap = getMap();
         if (gMap == null) {
             return;
         }
 
-        for (LocationStruct ls : otherEvents) {
-            gMap.addMarker(new MarkerOptions()
-                    .position(ls.place)
-                    .title(ls.eventTitle)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        }    
+        gMap.addMarker(new MarkerOptions()
+                .position(ls.place)
+                .title(ls.eventTitle)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
 
     private static class LocationStruct {
