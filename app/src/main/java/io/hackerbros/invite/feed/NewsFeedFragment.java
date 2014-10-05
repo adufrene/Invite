@@ -64,8 +64,8 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
                 if (filter == FilterTypes.PUBLIC)
                     query.whereEqualTo(Event.PUBLIC_EVENT_KEY, true);
                 else if (filter == FilterTypes.FRIENDS)
-                    query.whereContainedIn(Event.USERNAME_KEY, FacebookUtils.getFriendsAndMe());
-                query.orderByDescending("updatedAt");
+                    query.whereContainedIn(Event.FB_ID_KEY, FacebookUtils.getFriendsAndMe());
+                query.orderByDescending(Event.START_DATE_TIME_KEY);
                 return query;
             }
         };
@@ -80,7 +80,7 @@ public class NewsFeedFragment extends Fragment implements TitledFragment {
                 }
 
                 ProfilePictureView ppv = (ProfilePictureView) view.findViewById(R.id.profile_image);
-                ppv.setProfileId(event.getUsername());
+                ppv.setProfileId(event.getFacebookId());
 
                 TextView title = (TextView) view.findViewById(R.id.event_title);
                 TextView description = (TextView) view.findViewById(R.id.event_description);

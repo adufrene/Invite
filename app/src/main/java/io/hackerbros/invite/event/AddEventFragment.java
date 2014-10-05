@@ -194,7 +194,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
         newEvent.setPublicEvent(selector.getCheckedRadioButtonId()
                 == R.id.add_event_type_selector_public ? true : false);
 
-        newEvent.setUsername(FacebookUtils.getFacebookId());
+        newEvent.setFacebookId(FacebookUtils.getFacebookId());
 
         newEvent.setStartDateTime(startDateTime);
         newEvent.setEndDateTime(endDateTime);

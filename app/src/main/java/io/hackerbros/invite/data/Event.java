@@ -15,7 +15,7 @@ public class Event extends ParseObject {
     public static final String END_DATE_TIME_KEY = "EndTime";
     public static final String LOCATION_KEY = "Location";
     public static final String PUBLIC_EVENT_KEY = "isPublic";
-    public static final String USERNAME_KEY = "Username";
+    public static final String FB_ID_KEY = "FacebookId";
 
     public String getEventTitle() {
         return getString(EVENT_TITLE_KEY);
@@ -73,12 +73,12 @@ public class Event extends ParseObject {
         put(PUBLIC_EVENT_KEY, publicEvent);
     }
 
-    public String getUsername() {
-        return getString(USERNAME_KEY);
+    public String getFacebookId() {
+        return getString(FB_ID_KEY);
     }
 
-    public void setUsername(String username) {
-        put(USERNAME_KEY, username);
+    public void setFacebookId(String id) {
+        put(FB_ID_KEY, id);
     }
 
     public static ParseQuery<Event> getQuery() {
