@@ -1,10 +1,11 @@
-package io.hackerbros.invite.application;
+package io.hackbros.invite.application;
 
 import android.app.Application;
 import android.util.Log;
 
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.data.Event;
+import io.hackbros.invite.R;
+import io.hackbros.invite.data.Event;
+import io.hackbros.invite.data.Rsvp;
 
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
@@ -22,6 +23,7 @@ public class InitApplication extends Application {
       Parse.initialize(this, "JM1ObdhIVJuQSh1KogpvZRsU4nvcQkrcutOi9fO7", "s2Zd3ysZ5bL4UO8WDDCrj6djIheWjJHyMRSoYDn0");
       ParseFacebookUtils.initialize(getResources().getString(R.string.app_id));
       ParseObject.registerSubclass(Event.class);
+      ParseObject.registerSubclass(Rsvp.class);
 
       ParsePush.subscribeInBackground("", new SaveCallback() {
           @Override

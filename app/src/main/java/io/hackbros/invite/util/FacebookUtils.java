@@ -1,4 +1,4 @@
-package io.hackerbros.invite.util;
+package io.hackbros.invite.util;
 
 import java.util.HashSet;
 import java.util.Collection;

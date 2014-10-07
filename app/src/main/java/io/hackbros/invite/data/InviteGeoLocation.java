@@ -1,4 +1,4 @@
-package io.hackerbros.invite.data;
+package io.hackbros.invite.data;
 
 import com.parse.ParseGeoPoint;
 

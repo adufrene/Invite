@@ -1,12 +1,12 @@
-package io.hackerbros.invite.activities;
+package io.hackbros.invite.activities;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.event.AddEventFragment;
+import io.hackbros.invite.R;
+import io.hackbros.invite.event.AddEventFragment;
 
 public class EventActivity extends FragmentActivity {
     private FragmentManager fm;

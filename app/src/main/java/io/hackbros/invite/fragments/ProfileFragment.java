@@ -1,4 +1,4 @@
-package io.hackerbros.invite.fragments;
+package io.hackbros.invite.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -21,8 +21,8 @@ import com.facebook.Response;
 
 import org.w3c.dom.Text;
 
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.data.Event;
+import io.hackbros.invite.R;
+import io.hackbros.invite.data.Event;
 
 public class ProfileFragment extends Fragment implements TitledFragment {
     private ProfilePictureView profilePicView;

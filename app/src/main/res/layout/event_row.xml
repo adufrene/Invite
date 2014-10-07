@@ -32,7 +32,7 @@
 
     </LinearLayout>
 
-    <io.hackerbros.invite.views.ExpandableTextView
+    <io.hackbros.invite.views.ExpandableTextView
         android:id="@+id/event_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,8 +85,7 @@
             </ImageView>
 
             <TextView
-                android:id="@+id/text"
-                android:text="18"
+                android:id="@+id/rsvp_count"
                 android:textAppearance="?android:attr/textAppearanceButton"
                 android:layout_toRightOf="@id/friends_list_icon"
                 android:layout_centerVertical="true"

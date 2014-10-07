@@ -1,6 +1,7 @@
-package io.hackerbros.invite.data;
+package io.hackbros.invite.data;
 
 import java.util.Date;
+
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseClassName;
@@ -16,6 +17,7 @@ public class Event extends ParseObject {
     public static final String LOCATION_KEY = "Location";
     public static final String PUBLIC_EVENT_KEY = "isPublic";
     public static final String FB_ID_KEY = "FacebookId";
+    public static final String RSVP_COUNT_KEY = "RsvpCount";
 
     public String getEventTitle() {
         return getString(EVENT_TITLE_KEY);
@@ -79,6 +81,42 @@ public class Event extends ParseObject {
 
     public void setFacebookId(String id) {
         put(FB_ID_KEY, id);
+    }
+
+    public int getRsvpCount() {
+        return getInt(RSVP_COUNT_KEY);
+    }
+
+    public void setRsvpCount(int count) {
+        put(RSVP_COUNT_KEY, count);
+    }
+
+    public void incrementRsvp() {
+        increment(RSVP_COUNT_KEY);
+    }
+
+    public void decrementRsvp() {
+        increment(RSVP_COUNT_KEY, new Number() {
+            @Override
+            public double doubleValue() {
+                return -1.0;
+            }
+
+            @Override
+            public float floatValue() {
+                return -1.0f;
+            }
+
+            @Override
+            public int intValue() {
+                return -1;
+            }
+
+            @Override
+            public long longValue() {
+                return -1;
+            }
+        });
     }
 
     public static ParseQuery<Event> getQuery() {

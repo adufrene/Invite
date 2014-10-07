@@ -1,4 +1,4 @@
-package io.hackerbros.invite.activities;
+package io.hackbros.invite.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,8 +16,8 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.util.FacebookUtils;
+import io.hackbros.invite.R;
+import io.hackbros.invite.util.FacebookUtils;
 
 public class LoadingActivity extends Activity {
     private static final String TAG = LoadingActivity.class.getSimpleName();

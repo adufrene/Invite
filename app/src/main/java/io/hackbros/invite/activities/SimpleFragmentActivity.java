@@ -1,4 +1,4 @@
-package io.hackerbros.invite.activities;
+package io.hackbros.invite.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -6,7 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import io.hackerbros.invite.R;
+import io.hackbros.invite.R;
 
 public abstract class SimpleFragmentActivity extends Activity {
     public abstract Fragment getFragment();

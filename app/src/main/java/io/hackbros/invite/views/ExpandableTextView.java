@@ -1,4 +1,4 @@
-package io.hackerbros.invite.views;
+package io.hackbros.invite.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-import io.hackerbros.invite.R;
+import io.hackbros.invite.R;
 
 public class ExpandableTextView extends TextView {
       private static final int DEFAULT_TRIM_LENGTH = 100;

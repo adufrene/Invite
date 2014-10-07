@@ -1,4 +1,4 @@
-package io.hackerbros.invite.event;
+package io.hackbros.invite.event;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,17 +39,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.activities.NewsFeedActivity;
-import io.hackerbros.invite.data.Event;
-import io.hackerbros.invite.data.InviteGeoLocation;
-import io.hackerbros.invite.network.NetworkUtils;
+import io.hackbros.invite.R;
+import io.hackbros.invite.activities.NewsFeedActivity;
+import io.hackbros.invite.data.Event;
+import io.hackbros.invite.data.Rsvp;
+import io.hackbros.invite.data.InviteGeoLocation;
+import io.hackbros.invite.network.NetworkUtils;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.timepicker.TimePickerBuilder;
 import com.doomonafireball.betterpickers.timepicker.TimePickerDialogFragment;
 
-import io.hackerbros.invite.util.FacebookUtils;
+import io.hackbros.invite.util.FacebookUtils;
 
 import com.parse.ParseException;
 import com.parse.SaveCallback;
@@ -209,6 +210,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
 
         newEvent.setStartDateTime(startDateTime);
         newEvent.setEndDateTime(endDateTime);
+        newEvent.setRsvpCount(1);
         if((endDateTime.getTime() - startDateTime.getTime()) < 0) {
             Toast.makeText(getActivity().getApplicationContext(), "Invalid start/end, date/time fields", Toast.LENGTH_LONG).show();
             error++;
@@ -238,9 +240,21 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    private void saveEvent(Event newEvent) {
-        newEvent.saveInBackground();
-    
+    private void saveEvent(final Event newEvent) {
+        Toast.makeText(getActivity(), "Saving...", Toast.LENGTH_SHORT).show();
+        newEvent.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    String eventId = newEvent.getObjectId();
+                    String userId = ParseUser.getCurrentUser().getObjectId();
+                    new Rsvp().setEvent(eventId).setUser(userId).saveInBackground();
+                }
+                else {
+                }
+            }
+        });
+
         Intent i = new Intent(getActivity(), NewsFeedActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         getActivity().startActivity(i);

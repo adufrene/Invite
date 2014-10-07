@@ -1,4 +1,4 @@
-package io.hackerbros.invite.activities;
+package io.hackbros.invite.activities;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,12 +6,12 @@ import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
 
-import io.hackerbros.invite.login.LoginFragment;
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.event.AddEventFragment;
-import io.hackerbros.invite.util.SharedPrefsUtils;
-import io.hackerbros.invite.activities.NewsFeedActivity;
+import io.hackbros.invite.login.LoginFragment;
+import io.hackbros.invite.R;
+import io.hackbros.invite.R;
+import io.hackbros.invite.event.AddEventFragment;
+import io.hackbros.invite.util.SharedPrefsUtils;
+import io.hackbros.invite.activities.NewsFeedActivity;
 
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseAnonymousUtils;

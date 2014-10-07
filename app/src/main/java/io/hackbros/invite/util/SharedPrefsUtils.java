@@ -1,4 +1,4 @@
-package io.hackerbros.invite.util;
+package io.hackbros.invite.util;
 
 import android.content.SharedPreferences;
 import android.content.Context;

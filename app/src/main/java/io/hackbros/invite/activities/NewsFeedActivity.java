@@ -1,4 +1,4 @@
-package io.hackerbros.invite.activities;
+package io.hackbros.invite.activities;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,10 +22,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.fragments.TitledFragment;
-import io.hackerbros.invite.fragments.EventMapFragment;
-import io.hackerbros.invite.feed.NewsFeedFragment;
+import io.hackbros.invite.R;
+import io.hackbros.invite.fragments.TitledFragment;
+import io.hackbros.invite.fragments.EventMapFragment;
+import io.hackbros.invite.feed.NewsFeedFragment;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;

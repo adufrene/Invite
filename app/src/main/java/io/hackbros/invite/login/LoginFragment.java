@@ -1,4 +1,4 @@
-package io.hackerbros.invite.login;
+package io.hackbros.invite.login;
 
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,10 +10,10 @@ import android.content.Intent;
 import android.util.Log;
 import android.app.ProgressDialog;
 
-import io.hackerbros.invite.R;
-import io.hackerbros.invite.util.SharedPrefsUtils;
-import io.hackerbros.invite.activities.SimpleFragmentActivity;
-import io.hackerbros.invite.activities.LoadingActivity;
+import io.hackbros.invite.R;
+import io.hackbros.invite.util.SharedPrefsUtils;
+import io.hackbros.invite.activities.SimpleFragmentActivity;
+import io.hackbros.invite.activities.LoadingActivity;
 
 import com.parse.ParseUser;
 import com.parse.ParseException;

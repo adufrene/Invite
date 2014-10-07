@@ -1,4 +1,4 @@
-package io.hackerbros.invite.fragments;
+package io.hackbros.invite.fragments;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.hackerbros.invite.data.Event;
-import io.hackerbros.invite.util.FacebookUtils;
+import io.hackbros.invite.data.Event;
+import io.hackbros.invite.util.FacebookUtils;
 
 import org.json.JSONObject;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.hackerbros.invite" >
+    package="io.hackbros.invite" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -22,8 +22,8 @@
           to match your app's package name + ".permission.C2D_MESSAGE".
       -->
       <permission android:protectionLevel="signature"
-                  android:name="io.hackerbros.invite.permission.C2D_MESSAGE" />
-          <uses-permission android:name="io.hackerbros.invite.permission.C2D_MESSAGE" />
+                  android:name="io.hackbros.invite.permission.C2D_MESSAGE" />
+          <uses-permission android:name="io.hackbros.invite.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -94,7 +94,7 @@
                                                   <!--
   IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name.
                                                       -->
-              <category android:name="io.hackerbros.invite" />
+              <category android:name="io.hackbros.invite" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.parse.ParsePushBroadcastReceiver" android:exported="false">

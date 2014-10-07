@@ -1,4 +1,4 @@
-package io.hackerbros.invite.network;
+package io.hackbros.invite.network;
 
 import android.util.Log;
 
