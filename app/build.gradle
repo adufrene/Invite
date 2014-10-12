@@ -19,6 +19,8 @@ android {
       exclude 'res/drawable-xxhdpi-v4/ic_launcher.png'
       exclude 'classes.dex'
     }
+
+    useOldManifestMerger true // temproary hack? gnavdrawer-library is replacing the manifest???????
 }
 
 dependencies {
@@ -32,4 +34,6 @@ dependencies {
     compile ("com.doomonafireball.betterpickers:library:1.5.2") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
+
+    compile 'com.arasthel:gnavdrawer-library:+'
 }

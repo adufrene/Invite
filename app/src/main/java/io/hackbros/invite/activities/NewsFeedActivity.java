@@ -32,14 +32,19 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 
-public class NewsFeedActivity extends FragmentActivity {
+public class NewsFeedActivity extends InviteFragmentActivity {
 
     private static final String TAG = NewsFeedActivity.class.getSimpleName();
     private static final String DIALOG_ERROR = "dialog_error";
 
     private NewsFeedPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
-    private static LocationClient mLocationClient;
+
+    NewsFeedFragment frag1;
+    NewsFeedFragment frag2;
+    EventMapFragment frag3;
+
+    private boolean connected = false;
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -149,27 +154,31 @@ public class NewsFeedActivity extends FragmentActivity {
         dialogFragment.show(getSupportFragmentManager(), "errordialog");
     }
 
-    private static class NewsFeedPagerAdapter extends FragmentPagerAdapter {
+    private class NewsFeedPagerAdapter extends FragmentPagerAdapter {
         private Fragment[] fragments;
         public NewsFeedPagerAdapter(FragmentManager fm) {
             super(fm);
 
-            NewsFeedFragment frag1 = new NewsFeedFragment();
+            frag1 = new NewsFeedFragment();
             Bundle args1 = new Bundle();
             args1.putSerializable(NewsFeedFragment.BUNDLE_FILTER_KEY, NewsFeedFragment.FilterTypes.PUBLIC);
             frag1.setArguments(args1);
             frag1.setRetainInstance(true);
 
-            NewsFeedFragment frag2 = new NewsFeedFragment();
+            frag2 = new NewsFeedFragment();
             Bundle args2 = new Bundle();
             args2.putSerializable(NewsFeedFragment.BUNDLE_FILTER_KEY, NewsFeedFragment.FilterTypes.FRIENDS);
             frag2.setArguments(args2);
             frag2.setRetainInstance(true);
 
-            EventMapFragment frag3 = new EventMapFragment();
+            frag3 = new EventMapFragment();
             frag3.setRetainInstance(true);
             
             fragments = new Fragment[] { frag1, frag2, frag3 };
+
+            if(connected == true) {
+                frag3.initMap();
+            }
         }
 
         @Override
@@ -210,6 +219,16 @@ public class NewsFeedActivity extends FragmentActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return mDialog;
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        super.onConnected(bundle);
+        connected = true;
+
+        if (frag3 != null && frag3.isAdded()) {
+            frag3.initMap();
         }
     }
 }

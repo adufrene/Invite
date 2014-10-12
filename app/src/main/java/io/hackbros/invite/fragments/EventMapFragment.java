@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import io.hackbros.invite.activities.EventActivity;
+import io.hackbros.invite.activities.NewsFeedActivity;
 import io.hackbros.invite.data.Event;
 import io.hackbros.invite.util.FacebookUtils;
 
@@ -35,46 +37,14 @@ import com.parse.FindCallback;
 import com.parse.ParseUser;
 import com.parse.ParseGeoPoint;
 
-public class EventMapFragment extends SupportMapFragment implements TitledFragment, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
-
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+public class EventMapFragment extends SupportMapFragment implements TitledFragment {
 
     private static final String TAG = EventMapFragment.class.getSimpleName();
-
-    private LocationClient mLocationClient;
-    private ArrayList<LocationStruct> otherEvents = new ArrayList<LocationStruct>();
 
     public static final String BUNDLE_LATITUDE_KEY = "bundle_latitude_key";
     public static final String BUNDLE_LONGITUDE_KEY = "bundle_longitude_key";
 
-    @Override
-    public void onConnected(Bundle dataBundle) {
-        if (getMap() != null) {
-            initMap();
-        }
-    }
-
-    @Override
-    public void onDisconnected() {
-        Toast.makeText(getActivity(), "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (connectionResult.hasResolution()) {
-            try {
-                connectionResult.startResolutionForResult(
-                        getActivity(),
-                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
-            }
-            catch (IntentSender.SendIntentException e) {
-                Log.e(TAG, e.getClass().getSimpleName(), e);    
-            }
-        }
-        else {
-            Log.e(TAG, "No Resolution");
-        }
-    }
+    private NewsFeedActivity parentActivity;
 
     @Override
     public String getTitle() {
@@ -84,38 +54,24 @@ public class EventMapFragment extends SupportMapFragment implements TitledFragme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLocationClient = new LocationClient(getActivity(), this, this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, parent, savedInstanceState);
-        
+        parentActivity = (NewsFeedActivity) getActivity();
 
         initMap();
         return v; 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mLocationClient.connect();
-    }
-
-    @Override
-    public void onDestroy() {
-        if (mLocationClient.isConnected()) {
-            mLocationClient.disconnect();
-        }
-        super.onDestroy();
-    }
-
-    private void initMap() {
-        if (!mLocationClient.isConnected()) {
+    public void initMap() {
+        if (!parentActivity.mLocationClient.isConnected()) {
             return;
         }
 
-        Location location = mLocationClient.getLastLocation();
+        Location location = parentActivity.mLocationClient.getLastLocation();
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         LatLng currLoc = new LatLng(lat, lng);

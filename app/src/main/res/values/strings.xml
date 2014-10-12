@@ -5,4 +5,9 @@
     <string name="app_id">582361871889346</string>
     <string name="google_api_key">AIzaSyCUo5ApvI3OdDHTaUMe3glBAOUsjpIEEAA</string>
     <string name="action_person">Profile</string>
+    <string name="search_title">Event Search</string>
+    <string name="title_activity_invite">InviteActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 </resources>
