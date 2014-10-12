@@ -16,6 +16,9 @@ import android.view.View;
 import android.content.Intent;
 import android.util.Log;
 import android.location.Location;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.content.IntentSender;
 import android.view.Menu;
@@ -26,11 +29,14 @@ import io.hackbros.invite.R;
 import io.hackbros.invite.fragments.TitledFragment;
 import io.hackbros.invite.fragments.EventMapFragment;
 import io.hackbros.invite.feed.NewsFeedFragment;
+import io.hackbros.invite.view_adapters.SpinnerListAdapter;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
+
+import java.util.ArrayList;
 
 public class NewsFeedActivity extends InviteFragmentActivity {
 
@@ -53,10 +59,13 @@ public class NewsFeedActivity extends InviteFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
 
+
         findViewById(R.id.add_event_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NewsFeedActivity.this, EventActivity.class));
+                Intent i = new Intent(NewsFeedActivity.this, EventActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
             }
         });
 
@@ -97,7 +106,6 @@ public class NewsFeedActivity extends InviteFragmentActivity {
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -120,7 +128,9 @@ public class NewsFeedActivity extends InviteFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_profile:
-                startActivity(new Intent(this, ProfileActivity.class));
+                Intent i = new Intent(this, ProfileActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -177,8 +187,8 @@ public class NewsFeedActivity extends InviteFragmentActivity {
             fragments = new Fragment[] { frag1, frag2, frag3 };
 
             if(connected == true) {
-                frag1.fetchEvents();
-                frag2.fetchEvents();
+                frag1.fetchEvents(NewsFeedFragment.DEFAULT_SORT_DISTANCE);
+                frag2.fetchEvents(NewsFeedFragment.DEFAULT_SORT_DISTANCE);
                 frag3.initMap();
             }
         }
@@ -230,11 +240,11 @@ public class NewsFeedActivity extends InviteFragmentActivity {
         connected = true;
 
         if (frag1 != null && frag1.isAdded()) {
-            frag1.fetchEvents();
+            frag1.fetchEvents(NewsFeedFragment.DEFAULT_SORT_DISTANCE);
         }
 
         if (frag2 != null && frag2.isAdded()) {
-            frag2.fetchEvents();
+            frag2.fetchEvents(NewsFeedFragment.DEFAULT_SORT_DISTANCE);
         }
 
         if (frag3 != null && frag3.isAdded()) {

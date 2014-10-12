@@ -256,7 +256,7 @@ public class AddEventFragment extends Fragment implements View.OnClickListener, 
         });
 
         Intent i = new Intent(getActivity(), NewsFeedActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
         getActivity().startActivity(i);
     }
 

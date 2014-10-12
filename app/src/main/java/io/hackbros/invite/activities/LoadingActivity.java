@@ -67,7 +67,9 @@ public class LoadingActivity extends Activity {
     private void finishUp() {
         if (friendsLoaded && meLoaded) {
             finish();
-            startActivity(new Intent(this, NewsFeedActivity.class));
+            Intent i = new Intent(this, NewsFeedActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
         }
     }
 

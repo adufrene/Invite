@@ -18,8 +18,6 @@ import com.parse.ParseAnonymousUtils;
 import com.parse.ParseUser;
 
 public class LoginFeedActivity extends SimpleFragmentActivity {
-    private Button addNewEventButton;
-    private AddEventFragment eventFrag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +25,9 @@ public class LoginFeedActivity extends SimpleFragmentActivity {
 
         if (ParseUser.getCurrentUser() != null && !ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())
                 && ParseFacebookUtils.getSession() != null) {
-            startActivity(new Intent(this, LoadingActivity.class));
+            Intent i = new Intent(this, LoadingActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
             finish();
         }
     }

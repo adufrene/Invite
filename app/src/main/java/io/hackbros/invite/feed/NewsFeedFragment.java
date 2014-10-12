@@ -5,15 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Button;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -25,6 +31,7 @@ import io.hackbros.invite.data.InviteGeoLocation;
 import io.hackbros.invite.data.Rsvp;
 import io.hackbros.invite.fragments.TitledFragment;
 import io.hackbros.invite.util.FacebookUtils;
+import io.hackbros.invite.view_adapters.SpinnerListAdapter;
 
 import com.parse.ParseUser;
 import com.parse.ParseQueryAdapter;
@@ -55,6 +62,7 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
     private ParseQueryAdapter<Event> eventAdapter;
 
     private NewsFeedActivity parentActivity;
+    Spinner distanceSelector;
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -96,14 +104,38 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
               else {
                 Log.e(TAG, "Error fetching rsvps", e);
               }
-              fetchEvents();
+              fetchEvents(DEFAULT_SORT_DISTANCE);
           }
         });
+
+        initDistanceSpinner(v);
 
         return v;
     }
 
-    public void fetchEvents() {
+    private void initDistanceSpinner(View view) {
+        final int[] distancesList = {1, 2, 5, 10, 25, 50};
+        final SpinnerListAdapter adapter = new SpinnerListAdapter(parentActivity.getApplicationContext(), distancesList);
+        Spinner spin = (Spinner) view.findViewById(R.id.distance_spinner);
+
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                fetchEvents(distancesList[i]);
+                adapter.setCurSelected(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spin.setAdapter(adapter);
+        spin.setSelection(SpinnerListAdapter.DEFUALT_SELECTED_DISTANCE_VAL);
+    }
+
+    public void fetchEvents(final int milesRestriction) {
         if(!parentActivity.mLocationClient.isConnected()) {
             return;
         }
@@ -118,8 +150,8 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
                     query.whereEqualTo(Event.PUBLIC_EVENT_KEY, true);
                 else if (filter == FilterTypes.FRIENDS)
                     query.whereContainedIn(Event.FB_ID_KEY, FacebookUtils.getFriendsAndMe());
-                query.orderByDescending(Event.START_DATE_TIME_KEY)
-                    .whereWithinMiles(Event.LOCATION_KEY, new InviteGeoLocation(lat, lng), DEFAULT_SORT_DISTANCE);
+                query.orderByAscending(Event.START_DATE_TIME_KEY)
+                    .whereWithinMiles(Event.LOCATION_KEY, new InviteGeoLocation(lat, lng), milesRestriction);
                 return query;
             }
         };
@@ -171,7 +203,6 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
                 time.setText(sdf.format(event.getStartDateTime()));
                 rsvpCount.setText(String.valueOf(event.getRsvpCount()));
 
-                
                 return view;
             }
         };
@@ -181,9 +212,9 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
     @Override
     public void onResume() {
         super.onResume();
-        if (eventAdapter != null) {
-            eventAdapter.loadObjects();
-        } 
+//        if (eventAdapter != null) {
+//            eventAdapter.loadObjects();
+//        }
     }
 
     @Override
