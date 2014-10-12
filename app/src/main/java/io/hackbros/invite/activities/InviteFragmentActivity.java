@@ -22,7 +22,6 @@ public class InviteFragmentActivity extends FragmentActivity implements GooglePl
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-    public static final int DEFAULT_SORT_DISTANCE = 25;
     public LocationClient mLocationClient;
 
     @Override

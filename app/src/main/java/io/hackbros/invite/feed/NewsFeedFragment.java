@@ -19,7 +19,9 @@ import java.util.List;
 
 import io.hackbros.invite.R;
 import io.hackbros.invite.activities.EventActivity;
+import io.hackbros.invite.activities.NewsFeedActivity;
 import io.hackbros.invite.data.Event;
+import io.hackbros.invite.data.InviteGeoLocation;
 import io.hackbros.invite.data.Rsvp;
 import io.hackbros.invite.fragments.TitledFragment;
 import io.hackbros.invite.util.FacebookUtils;
@@ -39,6 +41,7 @@ import com.facebook.widget.ProfilePictureView;
 public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String BUNDLE_FILTER_KEY = "bundle_filter_key";
+    public static final int DEFAULT_SORT_DISTANCE = 25;
 
     public static String TAG = NewsFeedFragment.class.getSimpleName();
 
@@ -50,6 +53,8 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a - dd MMM yy");
     private ParseQueryAdapter<Event> eventAdapter;
+
+    private NewsFeedActivity parentActivity;
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -65,6 +70,7 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
+        parentActivity = (NewsFeedActivity) getActivity();
 
         srl = (SwipeRefreshLayout) v.findViewById(R.id.swipe_layout);
         srl.setOnRefreshListener(this);
@@ -97,16 +103,23 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
         return v;
     }
 
-    private void fetchEvents() {
+    public void fetchEvents() {
+        if(!parentActivity.mLocationClient.isConnected()) {
+            return;
+        }
+
         ParseQueryAdapter.QueryFactory<Event> factory = new ParseQueryAdapter.QueryFactory<Event>() {
             @Override
             public ParseQuery<Event> create() {
+                double lat = parentActivity.mLocationClient.getLastLocation().getLatitude();
+                double lng = parentActivity.mLocationClient.getLastLocation().getLongitude();
                 ParseQuery<Event> query = Event.getQuery();
                 if (filter == FilterTypes.PUBLIC)
                     query.whereEqualTo(Event.PUBLIC_EVENT_KEY, true);
                 else if (filter == FilterTypes.FRIENDS)
                     query.whereContainedIn(Event.FB_ID_KEY, FacebookUtils.getFriendsAndMe());
-                query.orderByDescending(Event.START_DATE_TIME_KEY);
+                query.orderByDescending(Event.START_DATE_TIME_KEY)
+                    .whereWithinMiles(Event.LOCATION_KEY, new InviteGeoLocation(lat, lng), DEFAULT_SORT_DISTANCE);
                 return query;
             }
         };

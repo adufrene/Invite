@@ -177,6 +177,8 @@ public class NewsFeedActivity extends InviteFragmentActivity {
             fragments = new Fragment[] { frag1, frag2, frag3 };
 
             if(connected == true) {
+                frag1.fetchEvents();
+                frag2.fetchEvents();
                 frag3.initMap();
             }
         }
@@ -226,6 +228,14 @@ public class NewsFeedActivity extends InviteFragmentActivity {
     public void onConnected(Bundle bundle) {
         super.onConnected(bundle);
         connected = true;
+
+        if (frag1 != null && frag1.isAdded()) {
+            frag1.fetchEvents();
+        }
+
+        if (frag2 != null && frag2.isAdded()) {
+            frag2.fetchEvents();
+        }
 
         if (frag3 != null && frag3.isAdded()) {
             frag3.initMap();
