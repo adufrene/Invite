@@ -89,6 +89,8 @@ public class NewsFeedFragment extends Fragment implements TitledFragment, SwipeR
         filter = (FilterTypes) args.getSerializable(BUNDLE_FILTER_KEY);
 
         lv = (ListView) v.findViewById(R.id.news_feed);
+        ViewGroup feedHeader = (ViewGroup) inflater.inflate(R.layout.spinner_list_header, lv, false);
+        lv.addHeaderView(feedHeader);
 
         ParseQuery rsvpQuery = Rsvp.getQuery();
         rsvpQuery.whereEqualTo(Rsvp.USER_ID_KEY, ParseUser.getCurrentUser().getObjectId());
